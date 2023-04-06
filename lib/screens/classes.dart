@@ -72,7 +72,7 @@ class CustomButton extends StatelessWidget {
               color: Colors.yellowAccent
           ),
         ) ,
-        child: RaisedButton(
+        child: MaterialButton(
           onPressed: (){},
           splashColor: Colors.teal,
           shape: StadiumBorder(),

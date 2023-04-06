@@ -1,8 +1,5 @@
 
-import 'dart:ffi';
-
-import 'package:educational_center/subjects.dart';
-import 'package:educational_center/timetable.dart';
+import 'package:educational_center/screens/subjects.dart';
 import 'package:flutter/material.dart';
 
 class ClassNotStarted extends StatelessWidget {

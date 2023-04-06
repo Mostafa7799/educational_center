@@ -1,96 +1,40 @@
-import 'dart:convert';
-import 'package:educational_center/HomeworkS.dart';
-import 'package:educational_center/Login.dart';
-
-import 'package:educational_center/MatterialS.dart';
-import 'package:educational_center/Register.dart';
-import 'package:educational_center/aboutUs.dart';
-import 'package:educational_center/class_not_started.dart';
-import 'package:educational_center/homeNotActive.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:http/http.dart' as http;
+import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
+import 'package:educational_center/screens/auth/LoginScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:educational_center/MatterialS.dart';
-import 'TeachersSearch.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'Model.dart';
-import 'QuizS.dart';
-import 'home.dart';
+import 'data/dio_helper/dio_helper.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  DioHelper.init();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:FutureBuilder(
-        builder: (context,dataSnapShot){
-          return Home();
-        },
-      ) ,
-
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) {
+            return AuthCubit();
+          },
+        ),
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Educational Center',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const LoginPage()
+      ),
     );
   }
 }
-  class FirstScreen extends StatefulWidget {
-    const FirstScreen({Key? key}) : super(key: key);
-
-    @override
-    State<FirstScreen> createState() => _FirstScreenState();
-  }
-
-  class _FirstScreenState extends State<FirstScreen> {
-    UsersList? usersList;
-     List useer =[];
-    Future<UsersList?> Getdata() async {
-
-      String url = "http://192.168.1.5/project_backend/getData.php";
-      var res = await http.get(Uri.parse(url));
-      if (res.statusCode==200)                {
-        var red = json.decode(res.body);
-        useer.addAll(red);
-        print(useer);
-        setState(() {
-
-        });
-      }
-
-    }
-    @override
-  void initState() {
-    // TODO: implement initState
-      Getdata();
-    super.initState();
-
-  }
-      @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('ko'),
-
-        ),
-         body:
-   ListView.builder(
-       itemCount:useer.length,
-       itemBuilder: (context,i)
-       {
-     return Container(
-
-      child: Text("${useer[i]['username']}")
-     );
-   })
-
-      );
-    }
-  }
-
-
 

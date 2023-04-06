@@ -1,6 +1,5 @@
-import 'package:educational_center/MatterialS.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'MatterialS.dart';
 
 class Subjects extends StatelessWidget {
   const Subjects({Key? key}) : super(key: key);
@@ -77,7 +76,7 @@ class CustomButton extends StatelessWidget {
               color: Colors.yellowAccent
           ),
         ) ,
-        child: RaisedButton(
+        child: MaterialButton(
           onPressed: onPressed,
           splashColor: Colors.teal,
           shape: StadiumBorder(),
