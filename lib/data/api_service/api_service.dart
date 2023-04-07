@@ -11,7 +11,7 @@ class ApiService {
   }) async {
     try {
       final response = await DioHelper.postRequest(
-        path: ApiConstant.registerEndPoint,
+        path: 'http://10.0.2.2:8000/api/user/register',
         data: data,
       );
       print((response).toString());

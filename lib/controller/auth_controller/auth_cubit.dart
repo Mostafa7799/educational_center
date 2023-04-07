@@ -1,10 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:educational_center/data/api_service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:meta/meta.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -18,13 +15,12 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(SignUpLoadingState());
       final res = await service.signup(data: data,);
-
       if (res != null && res['status'] != false) {
+        emit(SignUpSuccessState());
         Fluttertoast.showToast(
           msg: "Account created successfully",
         );
-        emit(SignUpSuccessState());
-      } else if (res != null && res['status'] == false) {
+      } else if (res != null && res['status'] != false) {
         emit(SignUpErrorState());
         throw res.toString();
       }

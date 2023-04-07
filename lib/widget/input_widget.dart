@@ -22,6 +22,7 @@ class InputWidget extends StatelessWidget {
       child: TextFormField(
         style: const TextStyle(color: Colors.black),
         controller: controller,
+
         validator: (value) => validator!(value!),
         obscureText: isPasswordType,
         enableSuggestions: !isPasswordType,

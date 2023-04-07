@@ -2,7 +2,7 @@ import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widget/input_widget.dart';
-import '../home/home_screen.dart';
+import '../home/home.dart';
 import 'Forget Password.dart';
 import 'Register.dart';
 
@@ -81,7 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                       labeltext: 'Password',
                       icon: Icons.lock_outline,
                     ),
-                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: forgetPassword(),
+                    ),
+                    const SizedBox(height: 10),
                     Container(
                       width: 130,
                       height: 50,
@@ -100,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return const HomeScreen();
+                                  return const Home();
                                 },
                               ),
                             );
@@ -130,10 +134,6 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 20),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: forgetPassword(),
                     ),
                     const SizedBox(
                       height: 20,
@@ -199,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               "Forget Password?",
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.blue,
               ),
             ),
           ),

@@ -10,15 +10,14 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-  TextEditingController PassWordController = TextEditingController();
-  TextEditingController NewpassWordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        toolbarHeight: 100,
         backgroundColor: Colors.white,
         shadowColor: Colors.white.withOpacity(0.1),
         leading: ElevatedButton(
@@ -45,59 +44,63 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         title: Text(
           "Forget Password",
           style: TextStyle(
-            fontSize: 25,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
         ),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: Column(
             children: [
               logoWidget(
                 imageName: 'assets/images/1.png',
-                width: 500,
-                height: 300,
+                width: 300,
+                height: 200,
               ),
               const SizedBox(height: 20),
               InputWidget(
-                controller: PassWordController,
+                controller: emailController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'This field is required';
+                  }
+                },
                 isPasswordType: false,
-                labeltext: 'Old password',
-                icon: Icons.lock_outline,
+                labeltext: 'Email',
+                icon: Icons.email_outlined,
               ),
-              SizedBox(height: 20),
-              InputWidget(
-                controller: NewpassWordController,
-                isPasswordType: true,
-                labeltext: 'New Password',
-                icon: Icons.lock_outline,
-              ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()){
+
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.resolveWith((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.white;
+                      }
+                      return Colors.orange;
+                    }),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                  ),
+                  child:const Text(
                     "Submit",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                         fontSize: 20),
                   ),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.resolveWith((states) {
-                        if (states.contains(MaterialState.pressed)) {
-                          return Colors.white;
-                        }
-                        return Colors.orange;
-                      }),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50)))),
                 ),
               ),
             ],

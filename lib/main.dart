@@ -30,6 +30,10 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Educational Center',
           theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+              elevation: 0,
+              color: Colors.white
+            ),
             primarySwatch: Colors.blue,
           ),
           home: const LoginPage()

@@ -1,8 +1,8 @@
 import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
-import 'package:educational_center/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widget/input_widget.dart';
+import '../home/home.dart';
 import 'LoginScreen.dart';
 
 class SignUp extends StatefulWidget {
@@ -21,7 +21,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController birthdayController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  List<String> listoflevel = ["l1", "l2", "l3", "l4"];
+  List<String> listoflevel = ["1", "2", "3", "4"];
   String? selectedlevel;
   final _formKey = GlobalKey<FormState>();
 
@@ -79,6 +79,7 @@ class _SignUpState extends State<SignUp> {
                         if(value.isEmpty){
                           return 'This field is required';
                         }
+                        return null;
                       },
                       isPasswordType: false,
                       labeltext: 'Enter your Username',
@@ -91,6 +92,7 @@ class _SignUpState extends State<SignUp> {
                         if(value.isEmpty){
                           return 'This field is required';
                         }
+                        return null;
                       },
                       isPasswordType: false,
                       labeltext: 'Enter your Email',
@@ -146,6 +148,7 @@ class _SignUpState extends State<SignUp> {
                         if(value.isEmpty){
                           return 'This field is required';
                         }
+                        return null;
                       },
                       isPasswordType: false,
                       labeltext: "Enter your PhoneNumber",
@@ -154,6 +157,12 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 12),
                     InputWidget(
                       controller: passwordController,
+                      validator: (value){
+                        if(value.isEmpty){
+                          return 'This field is required';
+                        }
+                        return null;
+                      },
                       isPasswordType: true,
                       labeltext: "Enter your Password",
                       icon: Icons.password,
@@ -208,16 +217,25 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: () {
                           if(_formKey.currentState!.validate()){
+                            if (state is SignUpSuccessState) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const Home();
+                                  },
+                                ),
+                              );
+                            }
                             cubit.signUp(
                               {
                                 'username': usernameController.text,
                                 'email': emailController.text,
-                                'level_id': levelController.text,
+                                'school': 'cairo',
+                                'level_id': selectedlevel,
                                 'phone': phoneNumberController.text,
                                 'password': passwordController.text,
-                                'birthdate':  birthdayController.text,
-                                'image':
-                                'https://cdn-icons-png.flaticon.com/512/3596/3596091.png',
+                                'birthdate':  '2006-04-04',
                               },
                             );
                           }
