@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class DioHelper {
   static late Dio dio;
 
-  static init() {
+  static init({String? token}) {
     dio = Dio(
       BaseOptions(
         baseUrl: 'http://10.0.2.2:8000/api/',
@@ -15,6 +15,8 @@ class DioHelper {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHtt pRequest',
+         'Authorization': "Bearer $token",
         }
       ),
     );

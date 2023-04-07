@@ -1,88 +1,54 @@
-import 'dart:convert';
-
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:educational_center/screens/subjects.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import '../HomeworkS.dart';
 import '../Matt.dart';
-
-import '../Model.dart';
 import '../QuizS.dart';
 import '../TeachersSearch.dart';
 import '../aboutUs.dart';
+import '../subjects.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        height: 50,
-        backgroundColor: Colors.white,
-        color: const Color(0xFF002746),
-        items: <Widget>[
-          CustomNav(
-            icon: 'assets/images/home.png',
-          ),
-          CustomNav(
-            icon: 'assets/images/ach.png',
-          ),
-          CustomNav(
-            icon: 'assets/images/checklist.png',
-          ),
-          CustomNav(
-            icon: 'assets/images/achievement.png',
-          ),
-          CustomNav(
-            icon: 'assets/images/user.png',
-          ),
-        ],
-        onTap: (index) {
-          //Handle button tap
-        },
-      ),
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          "Home",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w900,
-            fontSize: 25,
-          ),
-        ),
-      ),
-      body: ListView(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
+    return ListView(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Text(
+                "Welcome, Ahmed",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
                   width: 300,
                   height: 250,
                   child: Image.asset(
                     'assets/images/homepik.png',
                     bundle: null,
                   )),
-              const Divider(
-                thickness: 1,
-                color: Colors.black,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Row(
-                  children: [
-                    Padding(
+            ),
+            const Divider(
+              thickness: 1,
+              color: Colors.black,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Custom_Button(
                             text: "Subjects",
@@ -96,7 +62,9 @@ class _HomeState extends State<Home> {
                               );
                               return null;
                             })),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Points",
@@ -110,7 +78,9 @@ class _HomeState extends State<Home> {
                             );
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Grade",
@@ -122,7 +92,9 @@ class _HomeState extends State<Home> {
                                     builder: (context) => Subjects()));
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Homework",
@@ -134,7 +106,9 @@ class _HomeState extends State<Home> {
                                     builder: (context) => HomeworkS()));
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "TO-DO List",
@@ -146,26 +120,32 @@ class _HomeState extends State<Home> {
                                     builder: (context) => Subjects()));
                           }),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Row(
-                  children: [
-                    Padding(
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Quizzes",
                           icon: 'assets/images/quiz.png',
                           onpressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => QuizS()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QuizS(),
+                              ),
+                            );
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Teachers",
@@ -177,7 +157,9 @@ class _HomeState extends State<Home> {
                                     builder: (context) => TeachersSearch()));
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Languages",
@@ -189,7 +171,9 @@ class _HomeState extends State<Home> {
                                     builder: (context) => Subjects()));
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "Programming",
@@ -201,7 +185,9 @@ class _HomeState extends State<Home> {
                                     builder: (context) => Subjects()));
                           }),
                     ),
-                    Padding(
+                  ),
+                  Flexible(
+                    child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: Custom_Button(
                           text: "About Us",
@@ -213,13 +199,13 @@ class _HomeState extends State<Home> {
                                     builder: (context) => AboutUs()));
                           }),
                     ),
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
-      ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        )
+      ],
     );
   }
 }

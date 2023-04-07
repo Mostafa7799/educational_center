@@ -2,7 +2,7 @@ import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widget/input_widget.dart';
-import '../home/home.dart';
+import '../home/layout_screen.dart';
 import 'LoginScreen.dart';
 
 class SignUp extends StatefulWidget {
@@ -222,7 +222,7 @@ class _SignUpState extends State<SignUp> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return const Home();
+                                    return const LayoutScreen();
                                   },
                                 ),
                               );
