@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:educational_center/data/models/student_model.dart';
+import 'package:educational_center/data/models/teacher_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   ApiService service = ApiService();
 
   StudentModel? studentModel;
+  TeacherModel? teacherModel;
 
   Future<void> getStudentProfile() async {
     try {
@@ -27,6 +29,22 @@ class ProfileCubit extends Cubit<ProfileState> {
       studentModel = response;
     } catch (error) {
       emit(StudentProfileErrorState());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+      throw error.toString();
+    }
+  }
+
+  Future<void> getTeacherProfile() async {
+    try {
+      emit(TeacherProfileLoadingState());
+      final response = await service.getTeacherProfileData();
+      emit(TeacherProfileSuccessState());
+      teacherModel = response;
+    } catch (error) {
+      emit(TeacherProfileErrorState());
       Fluttertoast.showToast(
         msg: error.toString(),
         backgroundColor: Colors.red,
@@ -61,6 +79,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
     }
   }
+
   Future<void> logout()async{
     try{
       final response = await service.logout();
@@ -74,6 +93,24 @@ class ProfileCubit extends Cubit<ProfileState> {
         msg: error.toString(),
         backgroundColor: Colors.red,
       );
+    }
+  }
+
+  List<TeacherModel> teacherList = [];
+
+  Future<void> getTeacherList()async{
+    try {
+      emit(TeacherListLoadingState());
+      final response = await service.getTeacherListData();
+      emit(TeacherListSuccessState());
+      teacherList = response;
+    } catch (error) {
+      emit(TeacherListErrorState());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+      throw error.toString();
     }
   }
 }

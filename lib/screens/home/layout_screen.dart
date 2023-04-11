@@ -1,17 +1,10 @@
-import 'dart:convert';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:educational_center/screens/profile/teacher/teacher_profile.dart';
-import 'package:educational_center/screens/subjects.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
+import 'package:educational_center/screens/course/Classes%20time.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../HomeworkS.dart';
 import '../Matt.dart';
-
-import '../Model.dart';
 import '../QuizS.dart';
-import '../TeachersSearch.dart';
 import '../aboutUs.dart';
 import '../notification/notification_screen.dart';
 import '../profile/student/student_profile.dart';
@@ -27,12 +20,19 @@ class LayoutScreen extends StatefulWidget {
 class _LayoutScreenState extends State<LayoutScreen> {
   List<Widget> screens = const [
     HomeScreen(),
-    TeacherProfile(),
+    Classes(),
     QuizS(),
     AboutUs(),
     ProfileStudent(),
   ];
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    ProfileCubit.get(context).getStudentProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +95,8 @@ class _LayoutScreenState extends State<LayoutScreen> {
             icon: 'assets/images/user.png',
           ),
         ],
-
       ),
-      body:screens[currentIndex],
+      body: screens[currentIndex],
     );
   }
 }

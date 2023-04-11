@@ -1,155 +1,116 @@
+import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
+import 'package:educational_center/data/models/teacher_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class TeacherProfile extends StatefulWidget {
-  const TeacherProfile({Key? key}) : super(key: key);
+class TeacherProfile extends StatelessWidget {
+  const TeacherProfile({
+    Key? key,
+    required this.teacherModel,
+  }) : super(key: key);
+  final TeacherModel teacherModel;
 
-  @override
-  State<TeacherProfile> createState() => _TeacherProfileState();
-}
-
-class _TeacherProfileState extends State<TeacherProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(
-            top: 10,
-          ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.email_outlined,
-                color: Colors.black,
-              ),
-              Text(
-                "Profile",
-                style: TextStyle(color: Colors.black, fontSize: 25),
-              )
-            ],
-          ),
+        title: const Text(
+          "Teacher Profile",
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              "LOGO",
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-          )
-        ],
         toolbarHeight: 45,
         backgroundColor: Colors.white,
         shadowColor: Colors.white10.withOpacity(0.1),
       ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 610),
-            decoration: BoxDecoration(color: Colors.teal),
-          ),
-          Positioned(
-            top: 40,
-            left: 13,
-            child: CircleAvatar(
-              radius: 72,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage('assets/images/me.jpeg'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 72,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage(
+                    'assets/images/me.png',
+                  ),
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            top: 120,
-            left: 163,
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      "MohamedHassan",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: Text("Mathmatics",
-                          style: TextStyle(
-                              color: Colors.yellowAccent,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold)),
-                    )
-                  ],
+              Text(
+                teacherModel.username!,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400),
+              ),
+              Text(
+                teacherModel.school!,
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  "*********",
-                  style: TextStyle(color: Colors.deepOrange),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 210),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 80, bottom: 10),
-                  child: Row(
-                    children: [
-                      Text("Your Rate :"),
-                      RatingBar.builder(
-                        itemBuilder: (context, index) {
-                          return Icon(
-                            Icons.star,
-                            color: Colors.cyanAccent,
-                          );
-                        },
-                        onRatingUpdate: (double value) {
-                          print(value);
-                        },
-                        allowHalfRating: true,
-                      ),
-                    ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: RatingBar.builder(
+                  itemBuilder: (context, index) {
+                    return const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    );
+                  },
+                  onRatingUpdate: (double value) {
+                    print(value);
+                  },
+                  allowHalfRating: true,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(width: 2, color: Colors.black54),
+                ),
+                height: 100,
+                width: double.infinity,
+              ),
+              SizedBox(
+                width: 120,
+                child: MaterialButton(
+                  color: Colors.teal,
+                  shape: StadiumBorder(),
+                  onPressed: () {},
+                  child: const Text(
+                    "Submit",
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(width: 2, color: Colors.black54),
-                  ),
-                  height: 100,
-                  width: 360,
-                ),
-                SizedBox(
-                  width: 120,
-                  child: MaterialButton(
-                    color: Colors.teal,
-                    shape: StadiumBorder(),
-                    onPressed: () {},
-                    child: Text(
-                      "Submit",
-                    ),
+              ),
+              const Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "About:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-               const  Padding(
-                  padding:  EdgeInsets.only(right: 350),
-                  child: Text("About:"),
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  teacherModel.about!,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-               const  Padding(
-                  padding:  EdgeInsets.only(left: 10),
-                  child: Text(
-                      "sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"),
-                ),
-              ],
-            ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

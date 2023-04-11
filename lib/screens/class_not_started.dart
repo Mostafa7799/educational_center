@@ -1,5 +1,5 @@
 
-import 'package:educational_center/screens/subjects.dart';
+import 'package:educational_center/screens/subject/subjects.dart';
 import 'package:flutter/material.dart';
 
 class ClassNotStarted extends StatelessWidget {

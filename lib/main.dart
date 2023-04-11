@@ -1,5 +1,7 @@
 import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
+import 'package:educational_center/controller/courses_cotroller/course_cubit.dart';
 import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
+import 'package:educational_center/controller/subject_controller/subject_cubit.dart';
 import 'package:educational_center/screens/auth/LoginScreen.dart';
 import 'package:educational_center/screens/home/layout_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,25 +40,40 @@ class MyApp extends StatelessWidget {
             return ProfileCubit();
           },
         ),
+
+        /// Subject Cubit
+        BlocProvider(
+          create: (BuildContext context) {
+            return SubjectCubit();
+          },
+        ),
+
+        /// Courses Cubit
+        BlocProvider(
+          create: (BuildContext context) {
+            return CourseCubit();
+          },
+        ),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Educational Center',
-          theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-              elevation: 0,
-              color: Colors.white,
-              iconTheme: IconThemeData(
-                color: Colors.black87,
-              ),
-              titleTextStyle: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-              ),
+        debugShowCheckedModeBanner: false,
+        title: 'Educational Center',
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            elevation: 0,
+            color: Colors.white,
+            iconTheme: IconThemeData(
+              color: Colors.black87,
             ),
-            primarySwatch: Colors.blue,
+            titleTextStyle: TextStyle(
+              color: Colors.black87,
+              fontSize: 20,
+            ),
           ),
-          home: accessToken != null ? const LayoutScreen() : const LoginPage()),
+          primarySwatch: Colors.blue,
+        ),
+        home: accessToken != null ? const LayoutScreen() : const LoginPage(),
+      ),
     );
   }
 }

@@ -14,3 +14,7 @@ class SignUpErrorState extends AuthState{}
 class LoginLoadingState extends AuthState{}
 class LoginSuccessState extends AuthState{}
 class LoginErrorState extends AuthState{}
+
+class LoginTeacherLoadingState extends AuthState{}
+class LoginTeacherSuccessState extends AuthState{}
+class LoginTeacherErrorState extends AuthState{}

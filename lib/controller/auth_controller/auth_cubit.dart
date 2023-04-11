@@ -1,11 +1,9 @@
 import 'package:educational_center/data/api_service/api_service.dart';
-import 'package:educational_center/data/models/student_model.dart';
+import 'package:educational_center/data/dio_helper/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../core/pref.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -29,6 +27,8 @@ class AuthCubit extends Cubit<AuthState> {
           backgroundColor: Colors.green,
         );
         await SharedPreferencesHelper.saveAccessToken(res['token']);
+        DioHelper.init(token: res['token']);
+        await SharedPreferencesHelper.saveAccessName(res['username']);
       } else if (res != null && res['status'] != false) {
         emit(SignUpErrorState());
         throw res.toString();
@@ -50,12 +50,15 @@ class AuthCubit extends Cubit<AuthState> {
       final res = await service.login(
         data: data,
       );
-      if (res != null && res['status'] != false) {
+      if (res['token'] != null) {
         emit(LoginSuccessState());
         Fluttertoast.showToast(
           msg: "Welcome",
           backgroundColor: Colors.green,
         );
+        await SharedPreferencesHelper.saveAccessToken(res['token']);
+        DioHelper.init(token: res['token']);
+        await SharedPreferencesHelper.saveAccessName(res['username']);
       } else if (res != null && res['error']) {
         emit(LoginErrorState());
         throw res.toString();
@@ -64,7 +67,37 @@ class AuthCubit extends Cubit<AuthState> {
       emit(LoginErrorState());
       print(error.toString());
       Fluttertoast.showToast(
-        msg: error.toString(),
+        msg: 'Please enter a valid data',
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  /// handel Teacher Login
+  Future<void> loginTeacher(Map<String, dynamic> data) async {
+    try {
+      print(data);
+      emit(LoginTeacherLoadingState());
+      final res = await service.loginTeacher(
+        data: data,
+      );
+      if (res['token'] != null) {
+        emit(LoginTeacherSuccessState());
+        Fluttertoast.showToast(
+          msg: "Welcome $res['username']",
+          backgroundColor: Colors.green,
+        );
+        await SharedPreferencesHelper.saveAccessToken(res['token']);
+        DioHelper.init(token: res['token']);
+      } else if (res != null && res['error']) {
+        emit(LoginTeacherErrorState());
+        throw res.toString();
+      }
+    } catch (error) {
+      emit(LoginErrorState());
+      print(error.toString());
+      Fluttertoast.showToast(
+        msg: 'Please enter a valid data',
         backgroundColor: Colors.red,
       );
     }

@@ -27,7 +27,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
           var studentData = ProfileCubit.get(context).studentModel;
 
           /// Variables
-          String? selectedLevel = studentData!.levelId.toString() ?? '';
+          String? selectedLevel = studentData!.levelId.toString();
           TextEditingController school =
               TextEditingController(text: studentData.school);
           TextEditingController email =

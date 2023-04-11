@@ -1,29 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/pref.dart';
 import '../HomeworkS.dart';
 import '../Matt.dart';
 import '../QuizS.dart';
 import '../TeachersSearch.dart';
 import '../aboutUs.dart';
-import '../subjects.dart';
+import '../subject/subjects.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String? userName;
+  @override
+  void didChangeDependencies() async{
+    // TODO: implement didChangeDependencies
+    userName = await SharedPreferencesHelper.getAccessName();
+    super.didChangeDependencies();
+  }
+  @override
   Widget build(BuildContext context) {
+
+
     return ListView(
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(12.0),
+             Padding(
+              padding: const EdgeInsets.all(12.0),
               child: Text(
-                "Welcome, Ahmed",
-                style: TextStyle(
+                "Welcome, $userName",
+                style:const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
                   fontSize: 20,

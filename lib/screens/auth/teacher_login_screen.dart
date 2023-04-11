@@ -1,5 +1,6 @@
 import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
-import 'package:educational_center/screens/auth/teacher_login_screen.dart';
+import 'package:educational_center/screens/course/Classes%20time.dart';
+import 'package:educational_center/screens/profile/teacher/teacher_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widget/input_widget.dart';
@@ -7,14 +8,14 @@ import '../home/layout_screen.dart';
 import 'Forget Password.dart';
 import 'Register.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class TeacherLoginScreen extends StatefulWidget {
+  const TeacherLoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<TeacherLoginScreen> createState() => _TeacherLoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   late bool _passwordVisible;
 
   @override
@@ -49,8 +50,11 @@ class _LoginPageState extends State<LoginPage> {
                     const Padding(
                       padding: EdgeInsets.fromLTRB(10, 20, 20, 10),
                       child: Text(
-                        "Login",
-                        style: TextStyle(fontSize: 25, color: Colors.black),
+                        "Teacher Login",
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     logoWidget(
@@ -67,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                           return 'This field is required';
                         }
                       },
-                      labeltext: 'username',
+                      labeltext: 'email',
                       icon: Icons.person_outline,
                     ),
                     const SizedBox(height: 20),
@@ -82,10 +86,6 @@ class _LoginPageState extends State<LoginPage> {
                       labeltext: 'Password',
                       icon: Icons.lock_outline,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: forgetPassword(),
-                    ),
                     const SizedBox(height: 10),
                     Container(
                       width: 130,
@@ -96,16 +96,16 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            cubit.login({
+                            cubit.loginTeacher({
                               'email': usernameController.text,
                               'password': passWordController.text,
                             });
-                            if (state is LoginSuccessState) {
+                            if (state is LoginTeacherSuccessState) {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return const LayoutScreen();
+                                    return const Classes();
                                   },
                                 ),
                               );
@@ -139,42 +139,6 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    signUpOption(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "If you are a teacher",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const TeacherLoginScreen(),
-                              ),
-                            );
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              "Click Here",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
@@ -182,38 +146,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       ),
-    );
-  }
-
-  Row signUpOption() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "Don't have an account?",
-          style: TextStyle(color: Colors.black, fontSize: 16),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SignUp(),
-              ),
-            );
-          },
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              "Sign UP",
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        )
-      ],
     );
   }
 
