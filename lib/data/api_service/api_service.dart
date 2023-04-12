@@ -241,4 +241,26 @@ class ApiService {
     }
     return {};
   }
+
+  ///Dis Enroll Course
+  Future<Map<String,dynamic>> disEnrollCourse({required int id}) async {
+    try {
+      final response = await DioHelper.postRequest(
+          path: ApiConstant.disEnrollToCourseEndPoint,
+          data: {
+            'course_id': id,
+          }
+      );
+      print((response.data).toString());
+      if (response.statusCode == 200) {
+        return response.data;
+      } else{
+        print((response.data).toString());
+        throw (response.data).toString();
+      }
+    } on DioError catch (error) {
+      print(error.toString());
+    }
+    return {};
+  }
 }

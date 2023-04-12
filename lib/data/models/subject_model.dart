@@ -8,7 +8,7 @@ class SubjectModel {
   String? details;
   String? createdAt;
   String? updatedAt;
-  TeacherModel? teacher;
+  dynamic teacher;
 
   SubjectModel(
       {this.id,

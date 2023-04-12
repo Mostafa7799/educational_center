@@ -12,7 +12,7 @@ class Classes extends StatefulWidget {
 }
 
 class _ClassesState extends State<Classes> {
-  bool? _isChecked = false;
+  bool? _isChecked = true;
 
   @override
   void didChangeDependencies() async {
@@ -25,18 +25,6 @@ class _ClassesState extends State<Classes> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   toolbarHeight: 50,
-      //   backgroundColor: Colors.white,
-      //   shadowColor: Colors.white.withOpacity(0.01),
-      //   leading: Icon(Icons.message_sharp, color: Colors.black),
-      //   title: Text(
-      //     "Classes",
-      //     style: TextStyle(
-      //         fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
-      //   ),
-      //   actions: [],
-      // ),
       body: SafeArea(
         child: BlocBuilder<CourseCubit, CourseState>(
           builder: (context, state) {
@@ -60,15 +48,44 @@ class _ClassesState extends State<Classes> {
                       itemBuilder: (context, index) {
                         return CourseCard(
                           isChecked: _isChecked,
-                          onChanged: (value) {
-                            CourseCubit.get(context).enrollCourse(
-                              id: coursesList[index].id!,
-                            );
-                            setState(() {
-                              _isChecked = value;
-                              print(value);
-                            });
-                          },
+                          // iconCourse: CheckboxListTile(
+                          //   value: _isChecked,
+                          //   onChanged: (bool? newValue) {
+                          //     setState(() {
+                          //       _isChecked = newValue;
+                          //     });
+                          //   },
+                          //   activeColor: Colors.white,
+                          //   checkColor: Colors.black,
+                          // ),
+                          iconCourse: _isChecked == true
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isChecked =false;
+                                    });
+                                    CourseCubit.get(context).enrollCourse(
+                                      id: coursesList[index].id!,
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.add_task_outlined,
+                                  ),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isChecked =true;
+                                    });
+                                    CourseCubit.get(context).disEnrollCourse(
+                                      id: coursesList[index].id!,
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.task_alt,
+                                    color: Colors.green,
+                                  ),
+                                ),
                           subjectName: coursesList[index].subject!.name!,
                           day: coursesList[index].day!,
                           time: coursesList[index].time!,

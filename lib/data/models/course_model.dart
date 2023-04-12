@@ -14,6 +14,7 @@ class CourseModel {
   int? status;
   String? createdAt;
   String? updatedAt;
+  bool? loggedUserHaveThisCourse;
   SubjectModel? subject;
 
   CourseModel(
@@ -30,6 +31,7 @@ class CourseModel {
         this.status,
         this.createdAt,
         this.updatedAt,
+        this.loggedUserHaveThisCourse,
         this.subject});
 
   CourseModel.fromJson(Map<String, dynamic> json) {
@@ -46,8 +48,9 @@ class CourseModel {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    loggedUserHaveThisCourse = json['logged_user_have_this_course'];
     subject =
-    json['subject'] != null ? SubjectModel.fromJson(json['subject']) : null;
+    json['subject'] != null ?  SubjectModel.fromJson(json['subject']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -57,7 +60,7 @@ class CourseModel {
     data['subject_id'] = subjectId;
     data['image'] = image;
     data['no_of_students'] = noOfStudents;
-    data['no_of_avilables'] =noOfAvilables;
+    data['no_of_avilables'] = noOfAvilables;
     data['day'] = day;
     data['time'] = time;
     data['start_date'] = startDate;
@@ -65,6 +68,7 @@ class CourseModel {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['logged_user_have_this_course'] = loggedUserHaveThisCourse;
     if (subject != null) {
       data['subject'] = subject!.toJson();
     }

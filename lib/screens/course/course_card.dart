@@ -7,13 +7,13 @@ class CourseCard extends StatefulWidget {
     required this.day,
     this.isChecked = false,
     required this.time,
-     this.onChanged
+     this.iconCourse,
   }) : super(key: key);
   final String subjectName;
   final String day;
   final String time;
    bool? isChecked;
-   Function(bool value)? onChanged;
+   Widget? iconCourse;
 
   @override
   State<CourseCard> createState() => _CourseCardState();
@@ -59,6 +59,7 @@ class _CourseCardState extends State<CourseCard> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
                       '${widget.day}, ${widget.time}',
@@ -70,17 +71,7 @@ class _CourseCardState extends State<CourseCard> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Flexible(
-                      child: CheckboxListTile(
-                        value: widget.isChecked,
-                        onChanged: (bool? newValue) {
-                          widget.onChanged!(newValue!);
-                          setState(() {
-                            widget.isChecked = newValue;
-                          });
-                        },
-                        activeColor: Colors.white,
-                        checkColor: Colors.black,
-                      ),
+                      child: widget.iconCourse!,
                     ),
                   ],
                 )

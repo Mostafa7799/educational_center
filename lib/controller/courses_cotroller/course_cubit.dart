@@ -34,12 +34,34 @@ class CourseCubit extends Cubit<CourseState> {
   Future<void> enrollCourse({required int id})async{
     try {
       final response = await service.enrollCourse(id: id);
-      if(response != null){
+      if(response['status'] != false){
         Fluttertoast.showToast(
           msg: response['success'].toString(),
           backgroundColor: Colors.green,
         );
+      }else{
+        Fluttertoast.showToast(
+          msg: 'this course is Enrolled',
+          backgroundColor: Colors.red,
+        );
       }
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+      throw error.toString();
+    }
+  }
+
+  Future<void> disEnrollCourse({required int id})async{
+    try {
+      final response = await service.disEnrollCourse(id: id);
+        Fluttertoast.showToast(
+          msg: response['success'].toString(),
+          backgroundColor: Colors.green,
+        );
+
     } catch (error) {
       Fluttertoast.showToast(
         msg: error.toString(),

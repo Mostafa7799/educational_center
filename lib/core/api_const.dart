@@ -8,6 +8,7 @@ class ApiConstant{
   static String teacherDataEndPoint = 'teacher/profile';
   static String subjectListEndPoint = 'subjects';
   static String teachersListEndPoint = 'teachers';
-  static String coursesListEndPoint = 'courses';
+  static String coursesListEndPoint = 'user/courses';
   static String enrollToCourseEndPoint = 'user/enrolltocourse';
+  static String disEnrollToCourseEndPoint = 'user/disenrolltocourse';
 }
