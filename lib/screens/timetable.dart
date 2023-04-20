@@ -1,142 +1,111 @@
-import 'package:flutter/cupertino.dart';
+import 'package:educational_center/controller/courses_cotroller/course_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TimeTable extends StatefulWidget {
-  const TimeTable({Key? key}) : super(key: key);
+  const TimeTable({Key? key, required this.endPoint}) : super(key: key);
+  final String endPoint;
 
   @override
   State<TimeTable> createState() => _TimeTableState();
 }
 
 class _TimeTableState extends State<TimeTable> {
-
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    await CourseCubit.get(context)
+        .getTodayCoursesList(endPoint: widget.endPoint);
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-
-          title: Padding(
-            padding: const EdgeInsets.only(top: 2.5),
-            child: Column(
+      body: BlocBuilder<CourseCubit, CourseState>(
+        builder: (context, state) {
+          var coursesList = CourseCubit.get(context).todayListCourses;
+          if (state is TodayCoursesListErrorState) {
+            return const Center(
+              child: Text('No Data'),
+            );
+          }
+          if (state is TodayCoursesListLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
+            child: Table(
               children: [
-                Row(
+                TableRow(
                   children: [
-                    Icon(Icons.email_outlined,color: Colors.black,),
-                    Text("TimeTable",style: TextStyle(color: Colors.black,fontSize: 23),)
+                    Container(
+                      height: 40,
+                      width: 100,
+                      color: Colors.teal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.date_range,
+                          ),
+                          Text(
+                            "  Today Courses",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(children: [
-                    Icon(Icons.date_range,color: Colors.black,size: 20,),
-                    Text("Tuesday",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: Colors.black),)
-                  ],),
+                TableRow(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height *.8,
+                      child: ListView.builder(
+                        itemCount: coursesList.length,
+                        itemBuilder: (context,index){
+                          return Container(
+                            height: 40,
+                            width: double.infinity,
+                            color: Colors.orange,
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${coursesList[index].day!}, ${coursesList[index].time!}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Container(
+                                  color: Colors.black87,
+                                  height: 20,
+                                  width: 1.9,
+                                ),
+                                Text(
+                                  coursesList[index].details!,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text("LOGO",style: TextStyle(color: Colors.black,fontSize: 30),),
-            )
-          ],
-          toolbarHeight: 45,backgroundColor: Colors.white,shadowColor: Colors.white10.withOpacity(0.1),
-        ),
-        body:Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: ListView.builder(
-            shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-            return  CustomTable(
-              day: "Today",
-            );
-          }),
-        ),
-    );
-  }
-}
-
-class CustomTable extends StatelessWidget {
-  final String? day;
-  CustomTable({required this.day});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 40,vertical: 5),
-
-      child: Table(
-        border: TableBorder.all(),
-        children: [
-          TableRow(
-              children: [
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 120),
-                    child: Row(
-                      children: [
-                        Icon(Icons.date_range),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text("${day}",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                        ),
-                      ],
-                    ),
-                  ),height: 40,width:100,color: Colors.teal,),
-              ]
-          ),
-          TableRow(
-              children: [
-                Container(child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      Text("13:00 - 15:00    |",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Text("Class A - English",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                      ),
-                    ],
-                  ),
-                ),height: 40,width:100,color: Colors.orange,),
-              ]
-          ),
-          TableRow(
-              children: [
-                Container(child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      Text("13:00 - 15:00    |",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Text("Class A - English",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                      ),
-                    ],
-                  ),
-                ),height: 40,width:100,color: Colors.teal,),
-              ]
-          ),
-          TableRow(
-              children: [
-                Container(child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      Text("13:00 - 15:00    |",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Text("Class A - English",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                      ),
-                    ],
-                  ),
-                ),height: 40,width:100,color: Colors.orange,),
-              ]
-          ),
-        ],
+          );
+        },
       ),
     );
   }

@@ -41,12 +41,14 @@ class _TeachersSearchState extends State<TeachersSearch> {
             );
           }
           if (state is TeacherListLoadingState) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: ListView(
+              child: Column(
                 children: [
                   TextField(
                     decoration: InputDecoration(
@@ -67,118 +69,116 @@ class _TeachersSearchState extends State<TeachersSearch> {
                       ),
                     ),
                   ),
-                  //ImageProvider image,
-                  SafeArea(
-                    child: SizedBox(
-                      width: 1000,
-                      height: 500,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: ListView.separated(
-                            itemCount: teachers.length,
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 20.0),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return SafeArea(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                        itemCount: teachers.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 20.0),
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return SafeArea(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CircleAvatar(
+                                  radius: 30.0,
+                                  backgroundImage: NetworkImage(
+                                    teachers[index].image ??
+                                        'https://cdn-icons-png./1048/1048949.png',
+                                  ),
+                                  // child:image==null? Text(data),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const CircleAvatar(
-                                      radius: 30.0,
-                                      backgroundImage: NetworkImage(
-                                        'https://cdn-icons-png.flaticon.com/512/1048/1048949.png',
-                                      ),
-                                      // child:image==null? Text(data),
+                                    Text(
+                                      teachers[index].username!,
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          teachers[index].username!,
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(height: 3),
-                                        Text(
-                                          teachers[index].subject![index].name!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Column(
-                                      children: [
-                                        RatingBar.builder(
-                                            itemSize: 35,
-                                            itemCount: 4,
-                                            minRating: .5,
-                                            allowHalfRating: true,
-                                            itemBuilder: (context, index) =>
-                                                const Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                            onRatingUpdate: (value) {
-                                              return print(value);
-                                            }),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return TeacherProfile(
-                                                      teacherModel:
-                                                          teachers[index]);
-                                                },
-                                              ),
-                                            );
-                                          },
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty
-                                                    .resolveWith((states) {
-                                              if (states.contains(
-                                                  MaterialState.pressed)) {
-                                                return Colors.orange;
-                                              }
-                                              return Colors.green;
-                                            }),
-                                            shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  30,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            "View",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      teachers[index].subject?[index].name ??
+                                          'none',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
-                              );
-                            }),
-                      ),
-                    ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  children: [
+                                    RatingBar.builder(
+                                      itemSize: 35,
+                                      itemCount: teachers[index].rate ?? 3,
+                                      minRating: .5,
+                                      maxRating: 5,
+                                      initialRating:
+                                          teachers[index].rate?.toDouble() ?? 3,
+                                      allowHalfRating: true,
+                                      itemBuilder: (context, index) =>
+                                          const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (value) {
+                                        return;
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return TeacherProfile(
+                                                teacherModel: teachers[index],
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.resolveWith(
+                                                (states) {
+                                          if (states.contains(
+                                              MaterialState.pressed)) {
+                                            return Colors.orange;
+                                          }
+                                          return Colors.green;
+                                        }),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              30,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "View",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                   ),
                 ],
               ),

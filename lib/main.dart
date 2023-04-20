@@ -1,9 +1,13 @@
 import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
 import 'package:educational_center/controller/courses_cotroller/course_cubit.dart';
+import 'package:educational_center/controller/home_controller/home_controller_cubit.dart';
+import 'package:educational_center/controller/materila_controller/material_controller_cubit.dart';
 import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
+import 'package:educational_center/controller/quiz_controller/quiz_cubit.dart';
 import 'package:educational_center/controller/subject_controller/subject_cubit.dart';
 import 'package:educational_center/screens/auth/LoginScreen.dart';
 import 'package:educational_center/screens/home/layout_screen.dart';
+import 'package:educational_center/screens/home/teacher_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,10 +15,12 @@ import 'core/pref.dart';
 import 'data/dio_helper/dio_helper.dart';
 
 String? accessToken;
+bool? isTeacher;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   accessToken = await SharedPreferencesHelper.getAccessToken();
+  isTeacher = await SharedPreferencesHelper.getTeacher();
   DioHelper.init(token: accessToken);
   runApp(const MyApp());
 }
@@ -54,6 +60,26 @@ class MyApp extends StatelessWidget {
             return CourseCubit();
           },
         ),
+
+        /// Quizzes Cubit
+        BlocProvider(
+          create: (BuildContext context) {
+            return QuizCubit();
+          },
+        ),
+
+        /// Material Cubit
+        BlocProvider(
+          create: (BuildContext context) {
+            return MaterialCubit();
+          },
+        ),
+        /// Home Cubit
+        BlocProvider(
+          create: (BuildContext context) {
+            return HomeControllerCubit();
+          },
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -70,9 +96,16 @@ class MyApp extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.amber,
+            backgroundColor: Colors.white,
+          ),
         ),
-        home: accessToken != null ? const LayoutScreen() : const LoginPage(),
+        home: accessToken != null
+            ? isTeacher == true
+                ? const TeacherHomeScreen()
+                : const LayoutScreen()
+            : const LoginPage(),
       ),
     );
   }

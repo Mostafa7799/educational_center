@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 
 import '../../core/pref.dart';
 import '../../data/api_service/api_service.dart';
+import '../../data/models/user_attendance.dart';
 
 part 'profile_state.dart';
 
@@ -18,15 +19,18 @@ class ProfileCubit extends Cubit<ProfileState> {
   static ProfileCubit get(BuildContext context) => BlocProvider.of(context);
   ApiService service = ApiService();
 
-  StudentModel? studentModel;
-  TeacherModel? teacherModel;
+  StudentModel? studentModel = StudentModel();
+  List<UserAttendance> usersList = [];
+  TeacherModel? teacherModel = TeacherModel();
+  String? emailVerifiedAt;
 
   Future<void> getStudentProfile() async {
     try {
       emit(StudentProfileLoadingState());
       final response = await service.getStudentProfileData();
-      emit(StudentProfileSuccessState());
       studentModel = response;
+      emailVerifiedAt = response.emailVerifiedAt;
+      emit(StudentProfileSuccessState());
     } catch (error) {
       emit(StudentProfileErrorState());
       Fluttertoast.showToast(
@@ -50,6 +54,29 @@ class ProfileCubit extends Cubit<ProfileState> {
         backgroundColor: Colors.red,
       );
       throw error.toString();
+    }
+  }
+
+  Future<void> updateTeacherProfile({Map<String,dynamic>? data })async{
+    try {
+      print(data);
+      final res = await service.updateTeacherProfile(
+        data: data!,
+      );
+      if (res != null && res['status'] != false) {
+        Fluttertoast.showToast(
+          msg: "Data Updated",
+          backgroundColor: Colors.green,
+        );
+      } else if (res != null && res['error']) {
+        throw res.toString();
+      }
+    } catch (error) {
+      print(error.toString());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -80,10 +107,58 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> logout()async{
+  Future<void> studentSendFeedback({Map<String,dynamic>? data })async{
+    try {
+      print(data);
+      final res = await service.studentSendFeedback(
+        data: data!,
+      );
+      if (res != null) {
+        emit(UpdateStudentSuccessState());
+        Fluttertoast.showToast(
+          msg: res.toString(),
+          backgroundColor: Colors.green,
+        );
+      } else if (res != null && res['error']) {
+        throw res.toString();
+      }
+    } catch (error) {
+      print(error.toString());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  Future<void> teacherSendAttendance({Map<String,dynamic>? data })async{
+    try {
+      print(data);
+      final res = await service.teacherSendAttendance(
+        data: data!,
+      );
+      if (res != null) {
+        Fluttertoast.showToast(
+          msg: res.toString(),
+          backgroundColor: Colors.green,
+        );
+      } else if (res != null && res['error']) {
+        throw res.toString();
+      }
+    } catch (error) {
+      print(error.toString());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  Future<void> logout({required String endPoint})async{
     try{
-      final response = await service.logout();
+      final response = await service.logout(endPoint: endPoint);
       await SharedPreferencesHelper.removeAccessToken();
+      await SharedPreferencesHelper.removeTeacher();
       Fluttertoast.showToast(
         msg: response.toString(),
         backgroundColor: Colors.red,
@@ -106,6 +181,22 @@ class ProfileCubit extends Cubit<ProfileState> {
       teacherList = response;
     } catch (error) {
       emit(TeacherListErrorState());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+      throw error.toString();
+    }
+  }
+
+  Future<void> getUsersList({required String id})async{
+    try {
+      emit(StudentListLoadingState());
+      final response = await service.getUsersListData(id: id);
+      emit(StudentListSuccessState());
+      usersList = response;
+    } catch (error) {
+      emit(StudentListErrorState());
       Fluttertoast.showToast(
         msg: error.toString(),
         backgroundColor: Colors.red,

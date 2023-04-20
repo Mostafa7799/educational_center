@@ -1,5 +1,4 @@
 import 'package:educational_center/controller/subject_controller/subject_cubit.dart';
-import 'package:educational_center/data/models/subject_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../MatterialS.dart';
@@ -12,12 +11,13 @@ class Subjects extends StatefulWidget {
 }
 
 class _SubjectsState extends State<Subjects> {
-@override
-  void didChangeDependencies() async{
+  @override
+  void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
-  await SubjectCubit.get(context).getSubjectList();
+    await SubjectCubit.get(context).getSubjectList(endPoint: 'user/subjects');
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,17 +48,24 @@ class _SubjectsState extends State<Subjects> {
             child: ListView.builder(
                 itemCount: subjectList!.length,
                 itemBuilder: (context, index) {
-                  return CustomButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MaterialStudent(),
-                        ),
-                      );
-                    },
-                    Classestext: subjectList[index].name!,
-                  );
+                  return subjectList.isEmpty
+                      ? const Center(
+                          child: Text('No Data'),
+                        )
+                      : CustomButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MaterialStudent(
+                                  material: subjectList[index].matrial,
+                                ),
+                              ),
+                            );
+                            return null;
+                          },
+                          Classestext: subjectList[index].name!,
+                        );
                 }),
           );
         },

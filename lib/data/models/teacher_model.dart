@@ -9,6 +9,7 @@ class TeacherModel {
   String? school;
   String? password;
   String? about;
+  int? rate;
   String? image;
   String? createdAt;
   String? updatedAt;
@@ -26,18 +27,20 @@ class TeacherModel {
       this.image,
       this.createdAt,
       this.updatedAt,
+        this.rate,
       this.subject});
 
   TeacherModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
-    phone = json['phone'];
+    phone = json['phone'] ??'';
     birthdate = json['birthdate'];
     username = json['username'];
     school = json['school'];
     password = json['password'];
     about = json['about'];
-    image = json['image'];
+    image = json['image_url'];
+    rate = json['rate'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     subject = json['subjects'] != null

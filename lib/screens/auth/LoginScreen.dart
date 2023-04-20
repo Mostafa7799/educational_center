@@ -99,17 +99,16 @@ class _LoginPageState extends State<LoginPage> {
                             cubit.login({
                               'email': usernameController.text,
                               'password': passWordController.text,
-                            });
-                            if (state is LoginSuccessState) {
-                              Navigator.pushReplacement(
+                            }).whenComplete(
+                              () => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return const LayoutScreen();
                                   },
                                 ),
-                              );
-                            }
+                              ),
+                            );
                           }
                         },
                         style: ButtonStyle(
@@ -158,7 +157,8 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const TeacherLoginScreen(),
+                                builder: (context) =>
+                                    const TeacherLoginScreen(),
                               ),
                             );
                           },

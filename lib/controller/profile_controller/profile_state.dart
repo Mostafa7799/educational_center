@@ -20,3 +20,7 @@ class TeacherProfileErrorState extends ProfileState{}
 class TeacherListLoadingState extends ProfileState{}
 class TeacherListSuccessState extends ProfileState{}
 class TeacherListErrorState extends ProfileState{}
+
+class StudentListLoadingState extends ProfileState{}
+class StudentListSuccessState extends ProfileState{}
+class StudentListErrorState extends ProfileState{}

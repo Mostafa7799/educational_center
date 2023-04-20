@@ -1,5 +1,6 @@
 import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
 import 'package:educational_center/screens/course/Classes%20time.dart';
+import 'package:educational_center/screens/home/teacher_home.dart';
 import 'package:educational_center/screens/profile/teacher/teacher_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,17 +100,16 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                             cubit.loginTeacher({
                               'email': usernameController.text,
                               'password': passWordController.text,
-                            });
-                            if (state is LoginTeacherSuccessState) {
-                              Navigator.pushReplacement(
+                            }).whenComplete(
+                                  () => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return const Classes();
+                                    return const TeacherHomeScreen();
                                   },
                                 ),
-                              );
-                            }
+                              ),
+                            );
                           }
                         },
                         style: ButtonStyle(

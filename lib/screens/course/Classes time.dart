@@ -17,7 +17,7 @@ class _ClassesState extends State<Classes> {
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
-    await CourseCubit.get(context).getCoursesList();
+    await CourseCubit.get(context).getCoursesList(endPoint: 'user/courses');
     super.didChangeDependencies();
   }
 
@@ -47,22 +47,12 @@ class _ClassesState extends State<Classes> {
                       itemCount: coursesList.length,
                       itemBuilder: (context, index) {
                         return CourseCard(
-                          isChecked: _isChecked,
-                          // iconCourse: CheckboxListTile(
-                          //   value: _isChecked,
-                          //   onChanged: (bool? newValue) {
-                          //     setState(() {
-                          //       _isChecked = newValue;
-                          //     });
-                          //   },
-                          //   activeColor: Colors.white,
-                          //   checkColor: Colors.black,
-                          // ),
-                          iconCourse: _isChecked == true
+                          iconCourse: _isChecked == true &&
+                                  coursesList[index].loggedUserHaveThisCourse == 'true'
                               ? IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      _isChecked =false;
+                                      _isChecked = false;
                                     });
                                     CourseCubit.get(context).enrollCourse(
                                       id: coursesList[index].id!,
@@ -70,12 +60,13 @@ class _ClassesState extends State<Classes> {
                                   },
                                   icon: const Icon(
                                     Icons.add_task_outlined,
+                                    size: 30,
                                   ),
                                 )
                               : IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      _isChecked =true;
+                                      _isChecked = true;
                                     });
                                     CourseCubit.get(context).disEnrollCourse(
                                       id: coursesList[index].id!,
@@ -84,6 +75,7 @@ class _ClassesState extends State<Classes> {
                                   icon: const Icon(
                                     Icons.task_alt,
                                     color: Colors.green,
+                                    size: 30,
                                   ),
                                 ),
                           subjectName: coursesList[index].subject!.name!,

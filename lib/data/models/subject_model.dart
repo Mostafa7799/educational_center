@@ -1,4 +1,7 @@
 import 'package:educational_center/data/models/teacher_model.dart';
+import 'package:flutter/material.dart';
+
+import 'matrial_model.dart';
 
 class SubjectModel {
   int? id;
@@ -9,6 +12,7 @@ class SubjectModel {
   String? createdAt;
   String? updatedAt;
   dynamic teacher;
+  dynamic matrial;
 
   SubjectModel(
       {this.id,
@@ -19,6 +23,7 @@ class SubjectModel {
         this.createdAt,
         this.updatedAt,
         this.teacher,
+        this.matrial
         });
 
   SubjectModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +36,12 @@ class SubjectModel {
     updatedAt = json['updated_at'] ?? 'none';
     teacher =
     json['teacher'] != null ?  TeacherModel.fromJson(json['teacher']) : null;
+    if (json['matterials'] != null) {
+      matrial = <MaterialModel>[];
+      json['matterials'].forEach((v) {
+        matrial!.add( MaterialModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {

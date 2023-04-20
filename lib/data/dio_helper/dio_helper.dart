@@ -6,19 +6,18 @@ class DioHelper {
   static init({String? token}) {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://10.0.2.2:8000/api/',
-        receiveDataWhenStatusError: true,
-        connectTimeout: const Duration(seconds: 20),
-        // 20 seconds
-        receiveTimeout: const Duration(seconds: 20),
-        // 20 seconds
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHtt pRequest',
-         'Authorization': "Bearer $token",
-        }
-      ),
+          baseUrl: 'http://10.0.2.2:8000/api/',
+          receiveDataWhenStatusError: true,
+          connectTimeout: const Duration(seconds: 20),
+          // 20 seconds
+          receiveTimeout: const Duration(seconds: 20),
+          // 20 seconds
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHtt pRequest',
+            'Authorization': "Bearer $token",
+          }),
     );
   }
 
@@ -35,7 +34,11 @@ class DioHelper {
     Map<String, dynamic>? queryParameters,
     required Map<String, dynamic>? data,
   }) async {
-    return await dio.post(path, queryParameters: queryParameters, data: data);
+    return await dio.post(
+      path,
+      queryParameters: queryParameters,
+      data: data,
+    );
   }
 
   static Future<Response> putRequest({

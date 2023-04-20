@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../controller/auth_controller/auth_cubit.dart';
 import '../../widget/input_widget.dart';
 import 'LoginScreen.dart';
 
@@ -11,7 +12,10 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String? resetPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +77,52 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 icon: Icons.email_outlined,
               ),
               const SizedBox(height: 20),
+              InputWidget(
+                controller: nameController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'This field is required';
+                  }
+                },
+                isPasswordType: false,
+                labeltext: 'User name',
+                icon: Icons.person_outline,
+              ),
+              const SizedBox(height: 20),
+              InputWidget(
+                controller: mobileController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'This field is required';
+                  }
+                },
+                isPasswordType: false,
+                labeltext: 'Mobile',
+                icon: Icons.send_to_mobile,
+              ),
+              const SizedBox(height: 20),
+              if(resetPassword != null)
+              Text(
+                'Your password is: $resetPassword' ??  '',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    if(_formKey.currentState!.validate()){
-
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await AuthCubit.get(context).resetPassword(
+                        {
+                          'email': emailController.text,
+                          'username': nameController.text,
+                          'phone': mobileController.text,
+                        },
+                      ).then((value) {
+                        setState(() {
+                          resetPassword = AuthCubit.get(context).password;
+                        });
+                      });
                     }
                   },
                   style: ButtonStyle(
@@ -94,7 +139,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                     ),
                   ),
-                  child:const Text(
+                  child: const Text(
                     "Submit",
                     style: TextStyle(
                         color: Colors.black,

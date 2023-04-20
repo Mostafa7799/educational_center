@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
 import 'package:educational_center/core/pref.dart';
 import 'package:educational_center/screens/auth/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileStudent extends StatefulWidget {
   const ProfileStudent({Key? key}) : super(key: key);
@@ -12,12 +16,8 @@ class ProfileStudent extends StatefulWidget {
 }
 
 class _ProfileStudentState extends State<ProfileStudent> {
-  @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    await ProfileCubit.get(context).getStudentProfile();
-    super.didChangeDependencies();
-  }
+
+  File? pickedImageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,14 @@ class _ProfileStudentState extends State<ProfileStudent> {
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           var studentData = ProfileCubit.get(context).studentModel;
-
+          if (state is StudentProfileErrorState) {
+            return const Center(
+              child: Text('No Data'),
+            );
+          }
+          if (state is StudentProfileLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          }
           /// Variables
           String? selectedLevel = studentData!.levelId.toString();
           TextEditingController school =
@@ -37,37 +44,52 @@ class _ProfileStudentState extends State<ProfileStudent> {
           TextEditingController birthday =
               TextEditingController(text: studentData.birthdate);
           List<String> levels = ["1", "2", "3", "4"];
-          if (state is StudentProfileErrorState) {
-            return const Center(
-              child: Text('No Data'),
-            );
-          }
-          if (state is StudentProfileLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          }
           return Padding(
             padding: const EdgeInsets.all(12.0),
             child: ListView(
               children: [
                 Stack(
                   alignment: Alignment.center,
-                  children: const [
-                    CircleAvatar(
-                      radius: 80,
-                      backgroundImage: AssetImage(
-                        'assets/images/me.png',
-                      ),
-                    ),
+                  children: [
+                    pickedImageFile != null
+                        ? CircleAvatar(
+                            radius: 80,
+                            backgroundImage: FileImage(
+                              pickedImageFile!,
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: 80,
+                            backgroundImage: NetworkImage(
+                              'http://10.0.2.2:8000${studentData.image!}',
+                            ),
+                          ),
                     Positioned(
                       bottom: 10,
                       left: 220,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 20,
-                        child: Icon(
-                          Icons.camera_alt,
-                          size: 35,
-                          color: Color(0xFF404040),
+                      child: InkWell(
+                        onTap: () async {
+                          PickedFile? pickedFile = await ImagePicker().getImage(
+                            source:
+                                ImageSource.gallery, // or ImageSource.camera
+                          );
+                          if (pickedFile != null) {
+                            File imageFile = File(pickedFile.path);
+                            print(imageFile);
+                            // Call the function to send the image to the API
+                            setState(() {
+                              pickedImageFile = imageFile;
+                            });
+                          }
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20,
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 35,
+                            color: Color(0xFF404040),
+                          ),
                         ),
                       ),
                     ),
@@ -204,8 +226,9 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                             "phone": phone.text,
                                             "school": school.text,
                                             "birthdate": birthday.text,
-                                            // "image":,
-                                            "level_id": selectedLevel.toString(),
+                                             "image": pickedImageFile,
+                                            "level_id":
+                                                selectedLevel.toString(),
                                           });
                                         },
                                         child: Text("Edit"),
@@ -256,7 +279,9 @@ class _ProfileStudentState extends State<ProfileStudent> {
                     ),
                     IconButton(
                       onPressed: () async {
-                        await ProfileCubit.get(context).logout().then((value) {
+                        await ProfileCubit.get(context)
+                            .logout(endPoint: 'user/logout')
+                            .then((value) {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

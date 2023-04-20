@@ -1,4 +1,5 @@
 import 'package:educational_center/data/models/subject_model.dart';
+import 'package:educational_center/data/models/top_three_model.dart';
 
 class CourseModel {
   int? id;
@@ -16,6 +17,7 @@ class CourseModel {
   String? updatedAt;
   bool? loggedUserHaveThisCourse;
   SubjectModel? subject;
+  List<TopThreeModel>? topThree;
 
   CourseModel(
       {this.id,
@@ -32,7 +34,9 @@ class CourseModel {
         this.createdAt,
         this.updatedAt,
         this.loggedUserHaveThisCourse,
-        this.subject});
+        this.subject,
+        this.topThree
+      });
 
   CourseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -51,6 +55,13 @@ class CourseModel {
     loggedUserHaveThisCourse = json['logged_user_have_this_course'];
     subject =
     json['subject'] != null ?  SubjectModel.fromJson(json['subject']) : null;
+    topThree = json['first_three_users'] != null
+        ? List<TopThreeModel>.from(
+      (json['first_three_users'] as List).map(
+            (e) => TopThreeModel.fromJson(e),
+      ),
+    )
+        : [];
   }
 
   Map<String, dynamic> toJson() {

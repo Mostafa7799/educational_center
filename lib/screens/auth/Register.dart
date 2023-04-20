@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widget/input_widget.dart';
 import '../home/layout_screen.dart';
-import 'LoginScreen.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -217,16 +216,6 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: () {
                           if(_formKey.currentState!.validate()){
-                            if (state is SignUpSuccessState) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const LayoutScreen();
-                                  },
-                                ),
-                              );
-                            }
                             cubit.signUp(
                               {
                                 'username': usernameController.text,
@@ -237,7 +226,16 @@ class _SignUpState extends State<SignUp> {
                                 'password': passwordController.text,
                                 'birthdate':  '2006-04-04',
                               },
-                            );
+                            ).whenComplete(
+                                  () => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const LayoutScreen();
+                                  },
+                                ),
+                              ),
+                            );;
                           }
                         },
                         style: ButtonStyle(

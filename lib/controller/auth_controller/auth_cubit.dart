@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../core/pref.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -59,6 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
         await SharedPreferencesHelper.saveAccessToken(res['token']);
         DioHelper.init(token: res['token']);
         await SharedPreferencesHelper.saveAccessName(res['username']);
+        await SharedPreferencesHelper.saveTeacher(false);
       } else if (res != null && res['error']) {
         emit(LoginErrorState());
         throw res.toString();
@@ -84,13 +86,46 @@ class AuthCubit extends Cubit<AuthState> {
       if (res['token'] != null) {
         emit(LoginTeacherSuccessState());
         Fluttertoast.showToast(
-          msg: "Welcome $res['username']",
+          msg: "Welcome ${res['username']}",
           backgroundColor: Colors.green,
         );
         await SharedPreferencesHelper.saveAccessToken(res['token']);
+        await SharedPreferencesHelper.saveTeacher(true);
+        await SharedPreferencesHelper.saveAccessName(res['username']);
         DioHelper.init(token: res['token']);
       } else if (res != null && res['error']) {
         emit(LoginTeacherErrorState());
+        throw res.toString();
+      }
+    } catch (error) {
+      emit(LoginErrorState());
+      print(error.toString());
+      Fluttertoast.showToast(
+        msg: 'Please enter a valid data',
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  String? password;
+  /// handel Teacher Login
+  Future<void> resetPassword(Map<String, dynamic> data) async {
+    try {
+      print(data);
+      emit(ResetLoadingState());
+      final res = await service.resetPassword(
+        data: data,
+      );
+      if (res != null) {
+        password = res['new_password'];
+        emit(ResetSuccessState());
+        Fluttertoast.showToast(
+          msg: res['new_password'],
+          timeInSecForIosWeb: 20000,
+          backgroundColor: Colors.green,
+        );
+      } else if (res != null && res['error']) {
+        emit(ResetErrorState());
         throw res.toString();
       }
     } catch (error) {

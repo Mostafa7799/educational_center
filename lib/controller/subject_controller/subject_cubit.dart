@@ -18,10 +18,10 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   List<SubjectModel>? subjectList;
 
-  Future<void> getSubjectList()async{
+  Future<void> getSubjectList({required String endPoint})async{
     try {
       emit(SubjectListLoadingState());
-      final response = await service.getSubjectListData();
+      final response = await service.getSubjectListData(endPoint: endPoint);
       subjectList = response;
       print(subjectList);
       emit(SubjectListSuccessState());

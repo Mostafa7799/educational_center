@@ -33,24 +33,9 @@ class StudentModel {
     school = json['school'];
     emailVerifiedAt = json['email_verified_at'];
     levelId = json['level_id'];
-    image = json['image'];
+    image = json['image_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['birthdate'] = birthdate;
-    data['username'] = username;
-    data['school'] = school;
-    data['email_verified_at'] = emailVerifiedAt;
-    data['level_id'] = levelId;
-    data['image'] = image;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
-  }
 }

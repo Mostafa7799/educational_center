@@ -10,14 +10,14 @@ import 'Matt.dart';
 
 import 'Model.dart';
 
-class homeN extends StatefulWidget {
-  const homeN({Key? key}) : super(key: key);
+class HomeNotActive extends StatefulWidget {
+  const HomeNotActive({Key? key}) : super(key: key);
 
   @override
-  State<homeN> createState() => _homeNState();
+  State<HomeNotActive> createState() => _HomeNotActiveState();
 }
 
-class _homeNState extends State<homeN> {
+class _HomeNotActiveState extends State<HomeNotActive> {
   @override
   UsersList? usersList;
   List useer = [];
@@ -88,7 +88,7 @@ class _homeNState extends State<homeN> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12.0, vertical: 0),
                           child: Text(
-                            "Welcome ${useer[1]['username']}",
+                            "Welcome ",
                             style: TextStyle(
                                 fontWeight: FontWeight.w500, fontSize: 14),
                           ),

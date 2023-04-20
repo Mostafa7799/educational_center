@@ -29,6 +29,10 @@ dependencies:
   flutter_bloc: ^8.1.2
   fluttertoast: ^8.2.1
   shared_preferences: ^2.1.0
+  flutter_survey: ^0.1.4
+  url_launcher: ^6.1.10
+  image_picker: ^0.8.7+3
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +45,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/images/homepik.png
     - assets/images/teacher.png
     - assets/images/programming.png
     - assets/images/info.png

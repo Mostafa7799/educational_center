@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/pref.dart';
-import '../HomeworkS.dart';
+import '../grade_screen.dart';
+import '../homework/HomeworkS.dart';
 import '../Matt.dart';
-import '../QuizS.dart';
 import '../TeachersSearch.dart';
 import '../aboutUs.dart';
+import '../course/student_has_courses.dart';
+import '../ranking_screen.dart';
 import '../subject/subjects.dart';
+import '../timetable.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,41 +21,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? userName;
+
   @override
-  void didChangeDependencies() async{
+  void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     userName = await SharedPreferencesHelper.getAccessName();
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
-
-
     return ListView(
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Padding(
+            Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
                 "Welcome, $userName",
-                style:const TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: SizedBox(
-                  width: 300,
-                  height: 250,
-                  child: Image.asset(
-                    'assets/images/homepik.png',
-                    bundle: null,
-                  )),
+                width: double.infinity,
+                height: 200,
+                child: TimeTable(endPoint:'user/todayCoursesList'),
+              ),
             ),
             const Divider(
               thickness: 1,
@@ -64,19 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Flexible(
                     child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Custom_Button(
-                            text: "Subjects",
-                            icon: 'assets/images/books.png',
-                            onpressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Subjects(),
-                                ),
-                              );
-                              return null;
-                            })),
+                      padding: const EdgeInsets.all(2.0),
+                      child: Custom_Button(
+                        text: "Subjects",
+                        icon: 'assets/images/books.png',
+                        onpressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Subjects(),
+                            ),
+                          );
+                          return null;
+                        },
+                      ),
+                    ),
                   ),
                   Flexible(
                     child: Padding(
@@ -88,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Subjects(),
+                                builder: (context) => RankingScreen(),
                               ),
                             );
                           }),
@@ -104,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Subjects()));
+                                    builder: (context) => GradeScreen()));
                           }),
                     ),
                   ),
@@ -116,33 +119,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           icon: 'assets/images/list.png',
                           onpressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeworkS()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StudentHasThisCourse(
+                                  isHomework: true,
+                                ),
+                              ),
+                            );
                           }),
                     ),
                   ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Custom_Button(
-                          text: "TO-DO List",
-                          icon: 'assets/images/to-do-list.png',
-                          onpressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Subjects()));
-                          }),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Row(
-                children: [
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
@@ -153,12 +139,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => QuizS(),
+                                builder: (context) => StudentHasThisCourse(),
                               ),
                             );
                           }),
                     ),
                   ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),

@@ -1,10 +1,9 @@
 import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
 import 'package:educational_center/data/models/teacher_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class TeacherProfile extends StatelessWidget {
+class TeacherProfile extends StatefulWidget {
   const TeacherProfile({
     Key? key,
     required this.teacherModel,
@@ -12,7 +11,14 @@ class TeacherProfile extends StatelessWidget {
   final TeacherModel teacherModel;
 
   @override
+  State<TeacherProfile> createState() => _TeacherProfileState();
+}
+
+class _TeacherProfileState extends State<TeacherProfile> {
+  TextEditingController feedbackController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
+    double ratingValue = widget.teacherModel.rate?.toDouble() ??3;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -28,25 +34,25 @@ class TeacherProfile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 72,
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 70,
-                  backgroundImage: AssetImage(
-                    'assets/images/me.png',
+                  backgroundImage: NetworkImage(
+                    widget.teacherModel.image ??'https://pic.onlinewebfonts.com/svg/img_405324.png',
                   ),
                 ),
               ),
               Text(
-                teacherModel.username!,
+                widget.teacherModel.username!,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w400),
               ),
               Text(
-                teacherModel.school!,
+                widget.teacherModel.school!,
                 style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 18,
@@ -56,6 +62,7 @@ class TeacherProfile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: RatingBar.builder(
+                  initialRating: widget.teacherModel.rate?.toDouble() ??3,
                   itemBuilder: (context, index) {
                     return const Icon(
                       Icons.star,
@@ -63,26 +70,48 @@ class TeacherProfile extends StatelessWidget {
                     );
                   },
                   onRatingUpdate: (double value) {
+                    setState(() {
+                      ratingValue = value;
+                    });
                     print(value);
                   },
                   allowHalfRating: true,
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(width: 2, color: Colors.black54),
+              TextField(
+                controller: feedbackController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  filled: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(width: 1.5, color: Colors.orange),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(width: 1.5, color: Colors.orange),
+                    borderRadius: BorderRadius.circular(
+                      10.0,
+                    ),
+                  ),
+                  hintText: "your feedback",
                 ),
-                height: 100,
-                width: double.infinity,
               ),
               SizedBox(
                 width: 120,
                 child: MaterialButton(
                   color: Colors.teal,
                   shape: StadiumBorder(),
-                  onPressed: () {},
+                  onPressed: () {
+                    ProfileCubit.get(context).studentSendFeedback(
+                      data: {
+                        'teacher_id': widget.teacherModel.id,
+                        'review':feedbackController.text,
+                        'rate': ratingValue,
+                      }
+                    );
+                  },
                   child: const Text(
                     "Submit",
                   ),
@@ -101,7 +130,7 @@ class TeacherProfile extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  teacherModel.about!,
+                  widget.teacherModel.about!,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

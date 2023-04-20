@@ -5,15 +5,13 @@ class CourseCard extends StatefulWidget {
     Key? key,
     required this.subjectName,
     required this.day,
-    this.isChecked = false,
     required this.time,
      this.iconCourse,
   }) : super(key: key);
   final String subjectName;
   final String day;
   final String time;
-   bool? isChecked;
-   Widget? iconCourse;
+  Widget? iconCourse;
 
   @override
   State<CourseCard> createState() => _CourseCardState();

@@ -12,20 +12,18 @@ class Custom_Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            SizedBox(
-                width: 70,
-                height: 70,
-                child: IconButton(
-                  icon: new Image.asset(icon),
-                  onPressed: onpressed,
-                ))
-          ],
-        ),
+        SizedBox(
+            width: 70,
+            height: 70,
+            child: IconButton(
+              icon: new Image.asset(icon),
+              onPressed: onpressed,
+            )),
         Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14),
         )
       ],

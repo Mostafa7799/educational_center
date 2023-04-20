@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 class InputWidget extends StatelessWidget {
   final TextEditingController controller;
   final String? labeltext;
-  final IconData icon;
+  final IconData? icon;
   final bool isPasswordType;
   final Function(String value)? validator;
+  final Function()? onPressed;
+  final TextInputType? keyBoardType;
 
   const InputWidget({
     required this.controller,
     required this.labeltext,
-    required this.icon,
+    this.icon,
     required this.isPasswordType,
     this.validator,
+    this.onPressed,
+    this.keyBoardType,
   });
 
   @override
@@ -22,12 +26,13 @@ class InputWidget extends StatelessWidget {
       child: TextFormField(
         style: const TextStyle(color: Colors.black),
         controller: controller,
-
         validator: (value) => validator!(value!),
         obscureText: isPasswordType,
+        keyboardType: keyBoardType,
         enableSuggestions: !isPasswordType,
         autocorrect: !isPasswordType,
         cursorColor: Colors.orange,
+        onTap: onPressed,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.black),
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -54,9 +59,6 @@ class InputWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(45.0),
           ),
         ),
-        keyboardType: isPasswordType
-            ? TextInputType.visiblePassword
-            : TextInputType.emailAddress,
       ),
     );
   }
