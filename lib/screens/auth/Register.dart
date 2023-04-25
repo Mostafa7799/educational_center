@@ -1,6 +1,8 @@
 import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
+import 'package:educational_center/data/models/levels_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../controller/courses_cotroller/course_cubit.dart';
 import '../../widget/input_widget.dart';
 import '../home/layout_screen.dart';
 
@@ -20,12 +22,21 @@ class _SignUpState extends State<SignUp> {
   TextEditingController birthdayController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  List<String> listoflevel = ["1", "2", "3", "4"];
-  String? selectedlevel;
+
+
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState()  {
+    super.initState();
+    // TODO: implement didChangeDependencies
+     CourseCubit.get(context).getLevelList();
+  }
+
+  String? selectedlevel;
+  @override
   Widget build(BuildContext context) {
+    List<LevelsModel> listoflevel =  CourseCubit.get(context).levelsList;
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
@@ -102,7 +113,8 @@ class _SignUpState extends State<SignUp> {
                         horizontal: 8.0,
                         vertical: 12.0,
                       ),
-                      child: DropdownButtonFormField<String>(
+                      child: DropdownButtonFormField(
+                        value: selectedlevel,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(
                             Icons.border_color_outlined,
@@ -126,18 +138,17 @@ class _SignUpState extends State<SignUp> {
                               ),
                               borderRadius: BorderRadius.circular(45.0)),
                         ),
-                        value: selectedlevel,
                         items: listoflevel
                             .map((item) => DropdownMenuItem(
-                                  value: item,
+                                  value: item.id.toString(),
                                   child: Text(
-                                    item,
+                                    item.id.toString(),
                                     style: const TextStyle(fontSize: 25),
                                   ),
                                 ))
                             .toList(),
                         onChanged: (item) => setState(
-                          () => selectedlevel = item,
+                          () => selectedlevel = item.toString(),
                         ),
                       ),
                     ),

@@ -9,6 +9,7 @@ import 'package:educational_center/data/models/subject_model.dart';
 import 'package:educational_center/data/models/teacher_model.dart';
 
 import '../models/homework_model.dart';
+import '../models/levels_model.dart';
 import '../models/student_model.dart';
 import '../models/top_three_model.dart';
 import '../models/user_attendance.dart';
@@ -503,6 +504,29 @@ class ApiService {
         return List<TeacherModel>.from(
           (response.data as List).map(
                 (e) => TeacherModel.fromJson(e),
+          ),
+        );
+      } else {
+        print((response.data['error']).toString());
+        throw response.data;
+      }
+    } catch (error) {
+      print(error.toString());
+    }
+    return [];
+  }
+
+  /// Get list of Levels
+  Future<List<LevelsModel>> getLevelsList() async {
+    try {
+      final response = await DioHelper.getRequest(
+        path: 'user/levels',
+      );
+      if (response.statusCode == 200) {
+        print((response.data).toString());
+        return List<LevelsModel>.from(
+          (response.data as List).map(
+                (e) => LevelsModel.fromJson(e),
           ),
         );
       } else {

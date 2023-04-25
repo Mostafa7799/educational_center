@@ -1,4 +1,5 @@
 import 'package:educational_center/data/models/course_model.dart';
+import 'package:educational_center/data/models/levels_model.dart';
 import 'package:educational_center/data/models/top_three_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class CourseCubit extends Cubit<CourseState> {
   List<CourseModel> coursesList = [];
   List<CourseModel> todayListCourses = [];
   List<TopThreeModel> topThreeList = [];
+  List<LevelsModel> levelsList = [];
   String? userPointNo;
 
   Future<void> getCoursesList({required String endPoint})async{
@@ -27,6 +29,19 @@ class CourseCubit extends Cubit<CourseState> {
       coursesList = response;
     } catch (error) {
       emit(CoursesListErrorState());
+      Fluttertoast.showToast(
+        msg: error.toString(),
+        backgroundColor: Colors.red,
+      );
+      throw error.toString();
+    }
+  }
+
+  Future<void> getLevelList()async{
+    try {
+      final response = await service.getLevelsList();
+      levelsList = response;
+    } catch (error) {
       Fluttertoast.showToast(
         msg: error.toString(),
         backgroundColor: Colors.red,
