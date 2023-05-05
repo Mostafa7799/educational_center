@@ -1,6 +1,6 @@
 class TopThreeModel {
   int? userId;
-  int? grade;
+  double? grade;
   User? user;
 
   TopThreeModel({this.userId, this.grade, this.user});

@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
       final res = await service.signup(
         data: data,
       );
-      if (res != null && res['status'] != false) {
+      if (res['token'] != null && res['status'] != false) {
         emit(SignUpSuccessState());
         Fluttertoast.showToast(
           msg: "Account created successfully",

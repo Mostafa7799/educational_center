@@ -166,7 +166,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                     ),
                                   ),
                                   Text(
-                                    topThree[index].user!.username.toString(),
+                                    topThree[index].user!.username ?? '',
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,

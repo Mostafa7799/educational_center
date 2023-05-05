@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         /// Courses Cubit
         BlocProvider(
           create: (BuildContext context) {
-            return CourseCubit();
+            return CourseCubit()..getLevelList();
           },
         ),
 

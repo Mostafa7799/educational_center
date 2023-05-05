@@ -4,6 +4,7 @@ import 'package:educational_center/screens/home/teacher_home.dart';
 import 'package:educational_center/screens/profile/teacher/teacher_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../widget/input_widget.dart';
 import '../home/layout_screen.dart';
 import 'Forget Password.dart';
@@ -96,12 +97,13 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                           borderRadius: BorderRadius.circular(30)),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() ||
+                              state is LoginTeacherSuccessState) {
                             cubit.loginTeacher({
                               'email': usernameController.text,
                               'password': passWordController.text,
-                            }).whenComplete(
-                                  () => Navigator.pushReplacement(
+                            }).then(
+                              (value) => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
@@ -109,6 +111,11 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                                   },
                                 ),
                               ),
+                            );
+                          }else{
+                            Fluttertoast.showToast(
+                              msg: 'Please enter a valid data',
+                              backgroundColor: Colors.red,
                             );
                           }
                         },

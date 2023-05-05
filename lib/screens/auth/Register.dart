@@ -2,6 +2,7 @@ import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
 import 'package:educational_center/data/models/levels_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../controller/courses_cotroller/course_cubit.dart';
 import '../../widget/input_widget.dart';
 import '../home/layout_screen.dart';
@@ -22,21 +23,20 @@ class _SignUpState extends State<SignUp> {
   TextEditingController birthdayController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
-
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     // TODO: implement didChangeDependencies
-     CourseCubit.get(context).getLevelList();
+    CourseCubit.get(context).getLevelList();
   }
 
   String? selectedlevel;
+
   @override
   Widget build(BuildContext context) {
-    List<LevelsModel> listoflevel =  CourseCubit.get(context).levelsList;
+    List<LevelsModel> listoflevel = CourseCubit.get(context).levelsList;
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
@@ -85,8 +85,8 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 12),
                     InputWidget(
                       controller: usernameController,
-                      validator: (value){
-                        if(value.isEmpty){
+                      validator: (value) {
+                        if (value.isEmpty) {
                           return 'This field is required';
                         }
                         return null;
@@ -98,8 +98,8 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 12),
                     InputWidget(
                       controller: emailController,
-                      validator: (value){
-                        if(value.isEmpty){
+                      validator: (value) {
+                        if (value.isEmpty) {
                           return 'This field is required';
                         }
                         return null;
@@ -154,8 +154,8 @@ class _SignUpState extends State<SignUp> {
                     ),
                     InputWidget(
                       controller: phoneNumberController,
-                      validator: (value){
-                        if(value.isEmpty){
+                      validator: (value) {
+                        if (value.isEmpty) {
                           return 'This field is required';
                         }
                         return null;
@@ -167,8 +167,8 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 12),
                     InputWidget(
                       controller: passwordController,
-                      validator: (value){
-                        if(value.isEmpty){
+                      validator: (value) {
+                        if (value.isEmpty) {
                           return 'This field is required';
                         }
                         return null;
@@ -183,8 +183,8 @@ class _SignUpState extends State<SignUp> {
                           horizontal: 7, vertical: 5),
                       child: TextFormField(
                         controller: birthdayController,
-                        validator: (value){
-                          if(value!.isEmpty){
+                        validator: (value) {
+                          if (value!.isEmpty) {
                             return 'This field is required';
                           }
                           return null;
@@ -226,27 +226,36 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.circular(30)),
                       child: ElevatedButton(
                         onPressed: () {
-                          if(_formKey.currentState!.validate()){
-                            cubit.signUp(
-                              {
-                                'username': usernameController.text,
-                                'email': emailController.text,
-                                'school': 'cairo',
-                                'level_id': selectedlevel,
-                                'phone': phoneNumberController.text,
-                                'password': passwordController.text,
-                                'birthdate':  '2006-04-04',
-                              },
-                            ).whenComplete(
-                                  () => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const LayoutScreen();
-                                  },
+                          if (_formKey.currentState!.validate() || state is SignUpSuccessState) {
+                            try{
+                              cubit.signUp(
+                                {
+                                  'username': usernameController.text,
+                                  'email': emailController.text,
+                                  'school': 'cairo',
+                                  'level_id': selectedlevel,
+                                  'phone': phoneNumberController.text,
+                                  'password': passwordController.text,
+                                  'birthdate': '2006-04-04',
+                                },
+                              ).then(
+                                    (value) => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const LayoutScreen();
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );;
+                              );
+                            }catch(error){
+                              print(error.toString());
+                            }
+                          }else{
+                            Fluttertoast.showToast(
+                              msg: 'Please enter a valid data',
+                              backgroundColor: Colors.red,
+                            );
                           }
                         },
                         style: ButtonStyle(

@@ -2,6 +2,7 @@ import 'package:educational_center/controller/auth_controller/auth_cubit.dart';
 import 'package:educational_center/screens/auth/teacher_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../widget/input_widget.dart';
 import '../home/layout_screen.dart';
 import 'Forget Password.dart';
@@ -95,19 +96,29 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(30)),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            cubit.login({
-                              'email': usernameController.text,
-                              'password': passWordController.text,
-                            }).whenComplete(
-                              () => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const LayoutScreen();
-                                  },
+                          if (_formKey.currentState!.validate() &&
+                              state is LoginSuccessState) {
+                            try {
+                              cubit.login({
+                                'email': usernameController.text,
+                                'password': passWordController.text,
+                              }).whenComplete(
+                                () => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const LayoutScreen();
+                                    },
+                                  ),
                                 ),
-                              ),
+                              );
+                            } catch (error) {
+                              print(error.toString());
+                            }
+                          }else{
+                            Fluttertoast.showToast(
+                              msg: 'Please enter a valid data',
+                              backgroundColor: Colors.red,
                             );
                           }
                         },
