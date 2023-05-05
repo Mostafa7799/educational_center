@@ -33,11 +33,25 @@ class _SignUpState extends State<SignUp> {
   }
 
   String? selectedlevel;
-
+  List<LevelsModel> listoflevel = [];
   @override
   Widget build(BuildContext context) {
-    List<LevelsModel> listoflevel = CourseCubit.get(context).levelsList;
-    return BlocBuilder<AuthCubit, AuthState>(
+    setState(() {
+      listoflevel = CourseCubit.get(context).levelsList;
+    });
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context,state){
+        if (state is SignUpSuccessState) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const LayoutScreen();
+              },
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
         return Scaffold(
@@ -224,65 +238,59 @@ class _SignUpState extends State<SignUp> {
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30)),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            try{
-                              cubit.signUp(
-                                {
-                                  'username': usernameController.text,
-                                  'email': emailController.text,
-                                  'school': 'cairo',
-                                  'level_id': selectedlevel,
-                                  'phone': phoneNumberController.text,
-                                  'password': passwordController.text,
-                                  'birthdate': '2006-04-04',
-                                },
-                              );
-                              if(state is SignUpSuccessState) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const LayoutScreen();
-                                    },
+                      child: state is SignUpLoadingState
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    cubit.signUp(
+                                      {
+                                        'username': usernameController.text,
+                                        'email': emailController.text,
+                                        'school': 'cairo',
+                                        'level_id': selectedlevel,
+                                        'phone': phoneNumberController.text,
+                                        'password': passwordController.text,
+                                        'birthdate': '2006-04-04',
+                                      },
+                                    );
+                                  } catch (error) {
+                                    print(error.toString());
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: 'Please enter a valid data',
+                                    backgroundColor: Colors.red,
+                                  );
+                                }
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Colors.white;
+                                  }
+                                  return Colors.orange;
+                                }),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                );
-                              }
-                            }catch(error){
-                              print(error.toString());
-                            }
-                          }else{
-                            Fluttertoast.showToast(
-                              msg: 'Please enter a valid data',
-                              backgroundColor: Colors.red,
-                            );
-                          }
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith((states) {
-                            if (states.contains(MaterialState.pressed)) {
-                              return Colors.white;
-                            }
-                            return Colors.orange;
-                          }),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              child: const Text(
+                                "Sign up",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        child: const Text(
-                          "Sign up",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),

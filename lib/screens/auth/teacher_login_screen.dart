@@ -101,17 +101,18 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                             cubit.loginTeacher({
                               'email': usernameController.text,
                               'password': passWordController.text,
+                            }).then((value) {
+                              if(state is LoginTeacherSuccessState) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const LayoutScreen();
+                                    },
+                                  ),
+                                );
+                              }
                             });
-                            if(state is LoginTeacherSuccessState) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return const LayoutScreen();
-                                  },
-                                ),
-                              );
-                            }
                           }else{
                             Fluttertoast.showToast(
                               msg: 'Please enter a valid data',

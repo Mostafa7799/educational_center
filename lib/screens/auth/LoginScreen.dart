@@ -94,58 +94,63 @@ class _LoginPageState extends State<LoginPage> {
                       margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30)),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate() ||
-                              state is LoginSuccessState) {
-                            try {
-                              cubit.login({
-                                'email': usernameController.text,
-                                'password': passWordController.text,
-                              });
-                              if(state is LoginSuccessState) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const LayoutScreen();
-                                    },
+                      child: state is LoginLoadingState
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    cubit.login({
+                                      'email': usernameController.text,
+                                      'password': passWordController.text,
+                                    }).then((value) {
+                                      if (state is LoginSuccessState) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return const LayoutScreen();
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    });
+
+                                  } catch (error) {
+                                    print(error.toString());
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: 'Please enter a valid data',
+                                    backgroundColor: Colors.red,
+                                  );
+                                }
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Colors.white;
+                                  }
+                                  return Colors.orange;
+                                }),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                );
-                              }
-                            } catch (error) {
-                              print(error.toString());
-                            }
-                          }else{
-                            Fluttertoast.showToast(
-                              msg: 'Please enter a valid data',
-                              backgroundColor: Colors.red,
-                            );
-                          }
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith((states) {
-                            if (states.contains(MaterialState.pressed)) {
-                              return Colors.white;
-                            }
-                            return Colors.orange;
-                          }),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20),
+                              ),
                             ),
-                          ),
-                        ),
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20),
-                        ),
-                      ),
                     ),
                     const SizedBox(
                       height: 20,

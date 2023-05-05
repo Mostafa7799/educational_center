@@ -75,7 +75,7 @@ class _MaterialStudentState extends State<MaterialStudent> {
                           ),
                           InkWell(
                             onTap: (){
-                              _launchUrl( widget.material[index].src);
+                              _launchUrl(widget.material[index].src);
                             },
                             child: Container(
                               margin: EdgeInsets.all(12),
