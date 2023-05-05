@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/pref.dart';
 import '../../data/api_service/api_service.dart';
 
 part 'home_controller_state.dart';
@@ -17,6 +18,12 @@ class HomeControllerCubit extends Cubit<HomeControllerState> {
   static HomeControllerCubit get(BuildContext context) => BlocProvider.of(context);
   ApiService service = ApiService();
   String? selectedCourse;
+  String? userName;
+
+  Future<void> getUserName()async{
+    userName = await SharedPreferencesHelper.getAccessName();
+  }
+
   Future<String> teacherAddMessage({Map<String, dynamic>? data}) async {
     try {
       print(data);

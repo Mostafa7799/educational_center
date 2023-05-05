@@ -96,22 +96,23 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(30)),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate() &&
+                          if (_formKey.currentState!.validate() ||
                               state is LoginSuccessState) {
                             try {
                               cubit.login({
                                 'email': usernameController.text,
                                 'password': passWordController.text,
-                              }).whenComplete(
-                                () => Navigator.pushReplacement(
+                              });
+                              if(state is LoginSuccessState) {
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return const LayoutScreen();
                                     },
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             } catch (error) {
                               print(error.toString());
                             }

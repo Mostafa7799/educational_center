@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../controller/home_controller/home_controller_cubit.dart';
 import '../../core/pref.dart';
 import '../grade_screen.dart';
 import '../homework/HomeworkS.dart';
@@ -25,12 +26,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
-    userName = await SharedPreferencesHelper.getAccessName();
+    HomeControllerCubit.get(context).getUserName();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      userName = HomeControllerCubit.get(context).userName;
+    });
     return ListView(
       children: [
         Column(

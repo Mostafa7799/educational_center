@@ -226,7 +226,7 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.circular(30)),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate() || state is SignUpSuccessState) {
+                          if (_formKey.currentState!.validate()) {
                             try{
                               cubit.signUp(
                                 {
@@ -238,16 +238,17 @@ class _SignUpState extends State<SignUp> {
                                   'password': passwordController.text,
                                   'birthdate': '2006-04-04',
                                 },
-                              ).then(
-                                    (value) => Navigator.pushReplacement(
+                              );
+                              if(state is SignUpSuccessState) {
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return const LayoutScreen();
                                     },
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             }catch(error){
                               print(error.toString());
                             }

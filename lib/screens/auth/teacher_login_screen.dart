@@ -97,21 +97,21 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                           borderRadius: BorderRadius.circular(30)),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate() ||
-                              state is LoginTeacherSuccessState) {
+                          if (_formKey.currentState!.validate()) {
                             cubit.loginTeacher({
                               'email': usernameController.text,
                               'password': passWordController.text,
-                            }).then(
-                              (value) => Navigator.pushReplacement(
+                            });
+                            if(state is LoginTeacherSuccessState) {
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return const TeacherHomeScreen();
+                                    return const LayoutScreen();
                                   },
                                 ),
-                              ),
-                            );
+                              );
+                            }
                           }else{
                             Fluttertoast.showToast(
                               msg: 'Please enter a valid data',

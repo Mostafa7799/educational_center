@@ -1,13 +1,10 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:educational_center/widget/custom_bottun.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../controller/home_controller/home_controller_cubit.dart';
 import '../../widget/input_widget.dart';
-import '../Matt.dart';
 
 class HomeworkS extends StatefulWidget {
   const HomeworkS({Key? key, required this.courseId}) : super(key: key);

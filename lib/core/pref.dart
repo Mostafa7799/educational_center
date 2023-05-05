@@ -46,7 +46,7 @@ class SharedPreferencesHelper {
     print('====name====$name');
   }
 
-  static Future<String?> getAccessName() async {
+  static dynamic getAccessName() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_userName);
   }
