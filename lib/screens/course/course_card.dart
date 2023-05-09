@@ -6,11 +6,13 @@ class CourseCard extends StatefulWidget {
     required this.subjectName,
     required this.day,
     required this.time,
-     this.iconCourse,
+     this.iconCourse, required this.sDay, required this.sTime,
   }) : super(key: key);
   final String subjectName;
   final String day;
   final String time;
+   final String sDay;
+   final String sTime;
   Widget? iconCourse;
 
   @override
@@ -28,7 +30,7 @@ class _CourseCardState extends State<CourseCard> {
       ),
       child: Container(
         width: 80,
-        height: 85,
+        height: 110,
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
@@ -56,23 +58,41 @@ class _CourseCardState extends State<CourseCard> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      '${widget.day}, ${widget.time}',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: Colors.black,
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${widget.day}, ${widget.time}',
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 5,),
+                          Text(
+                            '${widget.sDay}, ${widget.sTime}',
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Flexible(
-                      child: widget.iconCourse!,
-                    ),
-                  ],
-                )
+                      Flexible(
+                        child: widget.iconCourse!,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

@@ -37,17 +37,6 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Educational Center",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w900,
-            fontSize: 25,
-          ),
-        ),
-        automaticallyImplyLeading: false,
-      ),
       body: ListView(
         children: [
           Column(

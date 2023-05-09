@@ -27,6 +27,9 @@ class _AttendanceState extends State<Attendance> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      ProfileCubit.get(context).getUsersList(id: widget.courseId);
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -61,6 +64,10 @@ class _AttendanceState extends State<Attendance> {
                       context,
                       addHomework(id:  users[index].id.toString()),
                     );
+                    setState(() {
+                      ProfileCubit.get(context).getUsersList(id: widget.courseId);
+                      users;
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -89,7 +96,7 @@ class _AttendanceState extends State<Attendance> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    users[index].studentModel!.username??'',
+                                    users[index].studentModel!.username ?? '',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,

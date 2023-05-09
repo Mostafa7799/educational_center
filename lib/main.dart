@@ -8,6 +8,7 @@ import 'package:educational_center/controller/subject_controller/subject_cubit.d
 import 'package:educational_center/screens/auth/LoginScreen.dart';
 import 'package:educational_center/screens/home/layout_screen.dart';
 import 'package:educational_center/screens/home/teacher_home.dart';
+import 'package:educational_center/screens/home/teacher_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -103,7 +104,7 @@ class MyApp extends StatelessWidget {
         ),
         home: accessToken != null
             ? isTeacher == true
-                ? const TeacherHomeScreen()
+                ? const TeacherLayoutScreen()
                 : const LayoutScreen()
             : const LoginPage(),
       ),

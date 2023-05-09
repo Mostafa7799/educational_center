@@ -18,6 +18,7 @@ class _TimeTableState extends State<TimeTable> {
         .getTodayCoursesList(endPoint: widget.endPoint);
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,42 +64,52 @@ class _TimeTableState extends State<TimeTable> {
                 TableRow(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height *.8,
-                      child: ListView.builder(
-                        itemCount: coursesList.length,
-                        itemBuilder: (context,index){
-                          return Container(
-                            height: 40,
-                            width: double.infinity,
-                            color: Colors.orange,
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${coursesList[index].day!}, ${coursesList[index].time!}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                      height: MediaQuery.of(context).size.height * .8,
+                      child: coursesList.isEmpty
+                          ? const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'No Courses Today',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 22),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: coursesList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: 40,
+                                  width: double.infinity,
+                                  color: Colors.orange,
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${coursesList[index].firstDay!}, ${coursesList[index].firstDay!}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Container(
+                                        color: Colors.black87,
+                                        height: 20,
+                                        width: 1.9,
+                                      ),
+                                      Text(
+                                        coursesList[index].firstDay!,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Container(
-                                  color: Colors.black87,
-                                  height: 20,
-                                  width: 1.9,
-                                ),
-                                Text(
-                                  coursesList[index].details!,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     )
                   ],
                 ),

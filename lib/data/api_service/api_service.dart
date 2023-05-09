@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:educational_center/core/api_const.dart';
 import 'package:educational_center/data/dio_helper/dio_helper.dart';
 import 'package:educational_center/data/models/course_model.dart';
+import 'package:educational_center/data/models/courses_time.dart';
 import 'package:educational_center/data/models/message_model.dart';
 import 'package:educational_center/data/models/questions_model.dart';
 import 'package:educational_center/data/models/quiz_model.dart';
@@ -76,6 +77,7 @@ class ApiService {
       print(error.toString());
     }
   }
+
   /// logout
   Future<String> logout({String? endPoint}) async {
     try {
@@ -85,7 +87,7 @@ class ApiService {
       print((response.data).toString());
       if (response.statusCode == 200) {
         return response.data;
-      } else if (response.data== 'false') {
+      } else if (response.data == 'false') {
         print((response.data).toString());
         throw (response.data).toString();
       }
@@ -114,7 +116,7 @@ class ApiService {
     return StudentModel();
   }
 
-/// Update student profile
+  /// Update student profile
   Future updateStudentProfile({
     required Map<String, dynamic> data,
   }) async {
@@ -135,7 +137,6 @@ class ApiService {
       print(error.toString());
     }
   }
-
 
   /// Update student profile
   Future updateTeacherProfile({
@@ -425,9 +426,9 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         print((response.data).toString());
-        return  List<SubjectModel>.from(
+        return List<SubjectModel>.from(
           (response.data as List).map(
-                (e) => SubjectModel.fromJson(e),
+            (e) => SubjectModel.fromJson(e),
           ),
         );
       } else {
@@ -442,7 +443,6 @@ class ApiService {
     return [];
   }
 
-
   /// Get list of Message
   Future<List<MessagesModel>> getMessageListData() async {
     try {
@@ -451,9 +451,9 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         print((response.data['messages']).toString());
-        return  List<MessagesModel>.from(
+        return List<MessagesModel>.from(
           (response.data['messages'] as List).map(
-                (e) => MessagesModel.fromJson(e),
+            (e) => MessagesModel.fromJson(e),
           ),
         );
       } else {
@@ -476,9 +476,9 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         print((response.data['active_homework']).toString());
-        return  List<ActiveHomework>.from(
+        return List<ActiveHomework>.from(
           (response.data['active_homework'] as List).map(
-                (e) => ActiveHomework.fromJson(e),
+            (e) => ActiveHomework.fromJson(e),
           ),
         );
       } else {
@@ -503,7 +503,7 @@ class ApiService {
         print((response.data).toString());
         return List<TeacherModel>.from(
           (response.data as List).map(
-                (e) => TeacherModel.fromJson(e),
+            (e) => TeacherModel.fromJson(e),
           ),
         );
       } else {
@@ -526,7 +526,7 @@ class ApiService {
         print((response.data).toString());
         return List<LevelsModel>.from(
           (response.data as List).map(
-                (e) => LevelsModel.fromJson(e),
+            (e) => LevelsModel.fromJson(e),
           ),
         );
       } else {
@@ -540,7 +540,8 @@ class ApiService {
   }
 
   /// Get list of Courses
-  Future<List<CourseModel>> getCoursesListData({required String endPoint}) async {
+  Future<List<CourseModel>> getCoursesListData(
+      {required String endPoint}) async {
     try {
       final response = await DioHelper.getRequest(
         path: endPoint,
@@ -549,7 +550,7 @@ class ApiService {
         print((response.data).toString());
         return List<CourseModel>.from(
           (response.data as List).map(
-                (e) => CourseModel.fromJson(e),
+            (e) => CourseModel.fromJson(e),
           ),
         );
       } else {
@@ -572,7 +573,7 @@ class ApiService {
         print((response.data).toString());
         return List<UserAttendance>.from(
           (response.data['users'] as List).map(
-                (e) => UserAttendance.fromJson(e),
+            (e) => UserAttendance.fromJson(e),
           ),
         );
       } else {
@@ -584,8 +585,6 @@ class ApiService {
     }
     return [];
   }
-
-
 
   /// Get list of Courses
   Future<List<TopThreeModel>> getTopThreeData() async {
@@ -597,7 +596,7 @@ class ApiService {
         print((response.data).toString());
         return List<TopThreeModel>.from(
           (response.data['top_three_users'] as List).map(
-                (e) => TopThreeModel.fromJson(e),
+            (e) => TopThreeModel.fromJson(e),
           ),
         );
       } else {
@@ -611,7 +610,10 @@ class ApiService {
   }
 
   /// Get list of Courses
-  Future<List<CourseModel>> getTodayCoursesData({required String endPoint}) async {
+  Future<List<CourseModel>> getTodayCoursesData({
+    required String endPoint,
+    required String day,
+  }) async {
     try {
       final response = await DioHelper.getRequest(
         path: endPoint,
@@ -619,7 +621,7 @@ class ApiService {
       if (response.statusCode == 200) {
         print((response.data).toString());
         return List<CourseModel>.from(
-          (response.data as List).map(
+          (response.data['courses'] as List).map(
                 (e) => CourseModel.fromJson(e),
           ),
         );
@@ -651,19 +653,19 @@ class ApiService {
     }
     return 0;
   }
+
   ///Enroll Course
-  Future<Map<String,dynamic>> enrollCourse({required int id}) async {
+  Future<Map<String, dynamic>> enrollCourse({required int id}) async {
     try {
       final response = await DioHelper.postRequest(
-        path: ApiConstant.enrollToCourseEndPoint,
-        data: {
-          'course_id': id,
-        }
-      );
+          path: ApiConstant.enrollToCourseEndPoint,
+          data: {
+            'course_id': id,
+          });
       print((response.data).toString());
       if (response.statusCode == 200) {
         return response.data;
-      } else{
+      } else {
         print((response.data).toString());
         throw (response.data).toString();
       }
@@ -674,18 +676,17 @@ class ApiService {
   }
 
   ///Dis Enroll Course
-  Future<Map<String,dynamic>> disEnrollCourse({required int id}) async {
+  Future<Map<String, dynamic>> disEnrollCourse({required int id}) async {
     try {
       final response = await DioHelper.postRequest(
           path: ApiConstant.disEnrollToCourseEndPoint,
           data: {
             'course_id': id,
-          }
-      );
+          });
       print((response.data).toString());
       if (response.statusCode == 200) {
         return response.data;
-      } else{
+      } else {
         print((response.data).toString());
         throw (response.data).toString();
       }
@@ -705,7 +706,7 @@ class ApiService {
         print((response.data).toString());
         return List<QuizModel>.from(
           (response.data as List).map(
-                (e) => QuizModel.fromJson(e),
+            (e) => QuizModel.fromJson(e),
           ),
         );
       } else {
@@ -728,7 +729,7 @@ class ApiService {
         print((response.data).toString());
         return List<QuestionsModel>.from(
           (response.data as List).map(
-                (e) => QuestionsModel.fromJson(e),
+            (e) => QuestionsModel.fromJson(e),
           ),
         );
       } else {

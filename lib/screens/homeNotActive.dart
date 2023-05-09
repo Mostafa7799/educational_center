@@ -6,9 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
+import '../controller/profile_controller/profile_cubit.dart';
 import 'Matt.dart';
 
 import 'Model.dart';
+import 'auth/LoginScreen.dart';
 
 class HomeNotActive extends StatefulWidget {
   const HomeNotActive({Key? key}) : super(key: key);
@@ -43,21 +45,6 @@ class _HomeNotActiveState extends State<HomeNotActive> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        height: 50,
-        backgroundColor: Colors.white,
-        color: Color(0xFF002746),
-        items: <Widget>[
-          CustomNav(icon: 'assets/images/home.png'),
-          CustomNav(icon: 'assets/images/ach.png'),
-          CustomNav(icon: 'assets/images/checklist.png'),
-          CustomNav(icon: 'assets/images/achievement.png'),
-          CustomNav(icon: 'assets/images/user.png'),
-        ],
-        onTap: (index) {
-          //Handle button tap
-        },
-      ),
       backgroundColor: Colors.white,
       body: ListView.builder(
           itemCount: 1,
@@ -96,9 +83,9 @@ class _HomeNotActiveState extends State<HomeNotActive> {
                       ],
                     ),
                     Row(
-                      children: [
+                      children: const [
                         Padding(
-                          padding: const EdgeInsets.only(top: 10.0, left: 110),
+                          padding: EdgeInsets.only(top: 10.0, left: 110),
                           child: Text(
                             "Pending...waiting for activation",
                             style: TextStyle(
@@ -109,7 +96,7 @@ class _HomeNotActiveState extends State<HomeNotActive> {
                     ),
                     SizedBox(
                         width: 500,
-                        height: 350,
+                        height: 300,
                         child: Image.asset(
                           'assets/images/1.png',
                           bundle: null,
@@ -172,7 +159,49 @@ class _HomeNotActiveState extends State<HomeNotActive> {
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await ProfileCubit.get(context)
+                              .logout(endPoint: 'user/logout')
+                              .then((value) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const LoginPage();
+                                },
+                              ),
+                            );
+                          });
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith((states) {
+                            if (states.contains(MaterialState.pressed)) {
+                              return Colors.white;
+                            }
+                            return Colors.orange;
+                          }),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          "Logout",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

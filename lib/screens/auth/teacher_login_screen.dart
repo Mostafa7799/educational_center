@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../widget/input_widget.dart';
 import '../home/layout_screen.dart';
+import '../home/teacher_layout.dart';
 import 'Forget Password.dart';
 import 'Register.dart';
 
@@ -34,7 +35,19 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocBuilder<AuthCubit, AuthState>(
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context,state){
+          if(state is LoginTeacherSuccessState){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return const TeacherLayoutScreen();
+                },
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           var cubit = AuthCubit.get(context);
           return SingleChildScrollView(
@@ -101,17 +114,6 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                             cubit.loginTeacher({
                               'email': usernameController.text,
                               'password': passWordController.text,
-                            }).then((value) {
-                              if(state is LoginTeacherSuccessState) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const LayoutScreen();
-                                    },
-                                  ),
-                                );
-                              }
                             });
                           }else{
                             Fluttertoast.showToast(

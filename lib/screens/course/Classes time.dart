@@ -23,6 +23,9 @@ class _ClassesState extends State<Classes> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      CourseCubit.get(context).getCoursesList(endPoint: 'user/courses');
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -47,8 +50,7 @@ class _ClassesState extends State<Classes> {
                       itemCount: coursesList.length,
                       itemBuilder: (context, index) {
                         return CourseCard(
-                          iconCourse: _isChecked == true &&
-                                  coursesList[index].loggedUserHaveThisCourse == 'true'
+                          iconCourse: coursesList[index].loggedUserHaveThisCourse != true
                               ? IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -79,8 +81,10 @@ class _ClassesState extends State<Classes> {
                                   ),
                                 ),
                           subjectName: coursesList[index].subject!.name!,
-                          day: coursesList[index].day!,
-                          time: coursesList[index].time!,
+                          day: coursesList[index].firstDay!,
+                          time: coursesList[index].firstDayTime!,
+                          sDay: coursesList[index].secondDay ??'',
+                          sTime: coursesList[index].secondDayTime ??'',
                         );
                       },
                     ),

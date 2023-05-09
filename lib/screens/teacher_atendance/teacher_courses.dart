@@ -69,8 +69,10 @@ class _TeacherCourseState extends State<TeacherCourse> {
                             child: CourseCard(
                               iconCourse: SizedBox(),
                               subjectName: coursesList[index].subject!.name!,
-                              day: coursesList[index].day!,
-                              time: coursesList[index].time!,
+                              day: coursesList[index].firstDay!,
+                              time: coursesList[index].firstDayTime!,
+                              sDay: coursesList[index].secondDay!,
+                              sTime: coursesList[index].secondDayTime!,
                             ),
                           );
                         }

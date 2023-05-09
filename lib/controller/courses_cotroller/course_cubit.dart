@@ -1,4 +1,5 @@
 import 'package:educational_center/data/models/course_model.dart';
+import 'package:educational_center/data/models/courses_time.dart';
 import 'package:educational_center/data/models/levels_model.dart';
 import 'package:educational_center/data/models/top_three_model.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class CourseCubit extends Cubit<CourseState> {
   ApiService service = ApiService();
 
   List<CourseModel> coursesList = [];
-  List<CourseModel> todayListCourses = [];
+  List<CourseModel> todayListCourses =[];
   List<TopThreeModel> topThreeList = [];
   List<LevelsModel> levelsList = [];
   String? userPointNo;
@@ -54,7 +55,7 @@ class CourseCubit extends Cubit<CourseState> {
   Future<void> getTodayCoursesList({required String endPoint})async{
     try {
       emit(TodayCoursesListLoadingState());
-      final response = await service.getTodayCoursesData(endPoint: endPoint);
+      final response = await service.getTodayCoursesData(endPoint: endPoint,day: '');
       todayListCourses = response;
       emit(TodayCoursesListSuccessState());
     } catch (error) {

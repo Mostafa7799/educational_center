@@ -24,6 +24,7 @@ class UserAttendance {
         this.attendanceNumber,
         this.absenceNumber,
         this.updatedAt,
+        this.studentModel
        });
 
   UserAttendance.fromJson(Map<String, dynamic> json) {

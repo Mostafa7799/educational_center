@@ -21,9 +21,6 @@ class _ProfileForTeacherState extends State<ProfileForTeacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Teacher Profile"),
-      ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           var teacherData = ProfileCubit.get(context).teacherModel;

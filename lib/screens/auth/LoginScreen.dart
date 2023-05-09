@@ -99,33 +99,16 @@ class _LoginPageState extends State<LoginPage> {
                               child: CircularProgressIndicator(),
                             )
                           : ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async{
                                 if (_formKey.currentState!.validate()) {
                                   try {
-                                    cubit.login({
+                                    await cubit.login({
                                       'email': usernameController.text,
                                       'password': passWordController.text,
-                                    }).then((value) {
-                                      if (state is LoginSuccessState) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return const LayoutScreen();
-                                            },
-                                          ),
-                                        );
-                                      }
-                                    });
-
+                                    }, context);
                                   } catch (error) {
                                     print(error.toString());
                                   }
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg: 'Please enter a valid data',
-                                    backgroundColor: Colors.red,
-                                  );
                                 }
                               },
                               style: ButtonStyle(

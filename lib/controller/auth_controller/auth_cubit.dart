@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../core/pref.dart';
+import '../../screens/home/layout_screen.dart';
 
 part 'auth_state.dart';
 
@@ -44,10 +45,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   /// handel Login
-  Future<void> login(Map<String, dynamic> data) async {
+  Future<void> login(Map<String, dynamic> data,BuildContext context) async {
+    emit(LoginLoadingState());
     try {
       print(data);
-      emit(LoginLoadingState());
       final res = await service.login(
         data: data,
       );
@@ -61,6 +62,14 @@ class AuthCubit extends Cubit<AuthState> {
         DioHelper.init(token: res['token']);
         await SharedPreferencesHelper.saveAccessName(res['username']);
         await SharedPreferencesHelper.saveTeacher(false);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const LayoutScreen();
+            },
+          ),
+        );
       } else if (res != null && res['error']) {
         emit(LoginErrorState());
         throw res.toString();
@@ -77,9 +86,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// handel Teacher Login
   Future<void> loginTeacher(Map<String, dynamic> data) async {
+    emit(LoginTeacherLoadingState());
     try {
       print(data);
-      emit(LoginTeacherLoadingState());
       final res = await service.loginTeacher(
         data: data,
       );

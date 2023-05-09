@@ -8,7 +8,10 @@ class CourseModel {
   String? image;
   int? noOfStudents;
   int? noOfAvilables;
-  String? day;
+  String? firstDay;
+  String? secondDay;
+  String? firstDayTime;
+  String? secondDayTime;
   String? time;
   String? startDate;
   String? endDate;
@@ -26,7 +29,10 @@ class CourseModel {
         this.image,
         this.noOfStudents,
         this.noOfAvilables,
-        this.day,
+        this.firstDay,
+        this.firstDayTime,
+        this.secondDay,
+        this.secondDayTime,
         this.time,
         this.startDate,
         this.endDate,
@@ -37,7 +43,10 @@ class CourseModel {
         this.subject,
         this.topThree
       });
-
+  ///"firstday": "saturday",
+//         "firstdaytime": "first",
+//         "secondday": "tuesday",
+//         "seconddaytime": "second",
   CourseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     details = json['details'];
@@ -45,7 +54,10 @@ class CourseModel {
     image = json['image'];
     noOfStudents = json['no_of_students'];
     noOfAvilables = json['no_of_avilables'];
-    day = json['day'];
+    firstDay = json['firstday'];
+    firstDayTime = json['firstdaytime'];
+    secondDay = json['secondday'];
+    secondDayTime = json['seconddaytime'];
     time = json['time'];
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -72,7 +84,10 @@ class CourseModel {
     data['image'] = image;
     data['no_of_students'] = noOfStudents;
     data['no_of_avilables'] = noOfAvilables;
-    data['day'] = day;
+    data['firstday'] = firstDay ;
+    data['firstdaytime'] = firstDayTime ;
+    data['secondday']  = secondDay ;
+    data['seconddaytime'] = secondDayTime;
     data['time'] = time;
     data['start_date'] = startDate;
     data['end_date'] = endDate;
