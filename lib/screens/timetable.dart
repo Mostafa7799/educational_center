@@ -154,7 +154,7 @@ class _TimeTableState extends State<TimeTable> {
                                           children: [
                                             Text(
                                               '${coursesList[index].firstDayTimeClock!}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
                                               ),
