@@ -636,7 +636,7 @@ class ApiService {
   }
 
   ///User point
-  Future<int> userPoint() async {
+  Future<double> userPoint() async {
     try {
       final response = await DioHelper.getRequest(
         path: 'user/loggedUserPoints',

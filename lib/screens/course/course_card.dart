@@ -29,8 +29,7 @@ class _CourseCardState extends State<CourseCard> {
         top: 20,
       ),
       child: Container(
-        width: 80,
-        height: 110,
+        padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
@@ -39,11 +38,6 @@ class _CourseCardState extends State<CourseCard> {
                 style: BorderStyle.solid),
             borderRadius: BorderRadius.circular(45.0)),
         child: ListTile(
-          leading: Image.asset(
-            'assets/images/1.png',
-            width: 50,
-            height: 50,
-          ),
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
@@ -65,9 +59,10 @@ class _CourseCardState extends State<CourseCard> {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${widget.day}, ${widget.time}',
+                            '${widget.day}/ ${widget.time}',
                             style: const TextStyle(
                               fontSize: 17,
                               color: Colors.black,
@@ -77,7 +72,7 @@ class _CourseCardState extends State<CourseCard> {
                           ),
                           SizedBox(height: 5,),
                           Text(
-                            '${widget.sDay}, ${widget.sTime}',
+                            '${widget.sDay}/ ${widget.sTime}',
                             style: const TextStyle(
                               fontSize: 17,
                               color: Colors.black,

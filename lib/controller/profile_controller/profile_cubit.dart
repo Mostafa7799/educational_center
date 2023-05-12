@@ -87,7 +87,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final res = await service.updateStudentProfile(
         data: data!,
       );
-      if (res != null && res['status'] != false) {
+      if (res != null && res == 1 ) {
         emit(UpdateStudentSuccessState());
         Fluttertoast.showToast(
           msg: "Data Updated",

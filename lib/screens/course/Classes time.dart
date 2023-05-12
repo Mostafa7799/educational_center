@@ -82,9 +82,9 @@ class _ClassesState extends State<Classes> {
                                 ),
                           subjectName: coursesList[index].subject!.name!,
                           day: coursesList[index].firstDay!,
-                          time: coursesList[index].firstDayTime!,
+                          time: coursesList[index].firstDayTimeClock!,
                           sDay: coursesList[index].secondDay ??'',
-                          sTime: coursesList[index].secondDayTime ??'',
+                          sTime: coursesList[index].secondDayTimeClock ??'',
                         );
                       },
                     ),

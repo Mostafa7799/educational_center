@@ -71,8 +71,10 @@ class _TeacherAddQuizState extends State<TeacherAddQuiz> {
                   items: coursesLise.map((item) {
                     return DropdownMenuItem(
                         value: item.id.toString(),
-                        child: Text(
-                          item.id.toString(),
+                        child: Flexible(
+                          child: Text(
+                            item.details.toString(),
+                          ),
                         ));
                   }).toList(),
                   decoration: InputDecoration(

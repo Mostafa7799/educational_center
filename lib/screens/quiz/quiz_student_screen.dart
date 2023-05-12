@@ -81,13 +81,13 @@ class _QuizStudentScreenState extends State<QuizStudentScreen> {
                                   width: 100,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                      color: Colors.black45
-                                    ),
+                                    border: Border.all(color: Colors.black45),
                                   ),
                                   child: Center(
                                     child: Text(
-                                      '${quizzes[index].userGrade![0].userGrade}/${quizzes[index].totalGrade}',
+                                      quizzes[index].userGrade!.isNotEmpty
+                                          ? '${quizzes[index].userGrade![0].userGrade}/${quizzes[index].totalGrade}'
+                                          : '0',
                                       style: const TextStyle(
                                         fontSize: 18,
                                       ),
@@ -175,12 +175,12 @@ class _QuizStudentScreenState extends State<QuizStudentScreen> {
                                 Row(
                                   children: [
                                     if (quizzes[index].status != 'active')
-                                    Text(
-                                      quizzes[index].status!,
-                                      style: const TextStyle(
-                                        fontSize: 20,
+                                      Text(
+                                        quizzes[index].status!,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                        ),
                                       ),
-                                    ),
                                     if (quizzes[index].status == 'active')
                                       CustomButton(
                                         width: 100,

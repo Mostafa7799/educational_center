@@ -4,7 +4,7 @@ class QuizModel {
   String? date;
   String? startTime;
   String? endTime;
-  int? totalGrade;
+  dynamic totalGrade;
   String? details;
   String? status;
   String? createdAt;
@@ -31,7 +31,7 @@ class QuizModel {
     date = json['date']??'';
     startTime = json['start_time']??'';
     endTime = json['end_time']??'';
-    totalGrade = json['total_grade']??'';
+    totalGrade = json['total_grade'];
     details = json['details']??'';
     status = json['status'].toString();
     createdAt = json['created_at']??'';
@@ -64,7 +64,7 @@ class UserGrade {
   int? id;
   int? quizId;
   int? userId;
-  int? userGrade;
+  dynamic userGrade;
   String? createdAt;
   String? updatedAt;
 
@@ -85,14 +85,4 @@ class UserGrade {
     updatedAt = json['updated_at'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['quiz_id'] = this.quizId;
-    data['user_id'] = this.userId;
-    data['user_grade'] = this.userGrade;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
 }

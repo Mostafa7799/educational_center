@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TimeTable extends StatefulWidget {
-  const TimeTable({Key? key, required this.endPoint}) : super(key: key);
+  const TimeTable({
+    Key? key,
+    required this.endPoint,
+    this.toDay = false,
+  }) : super(key: key);
   final String endPoint;
+  final bool toDay;
 
   @override
   State<TimeTable> createState() => _TimeTableState();
@@ -50,7 +55,7 @@ class _TimeTableState extends State<TimeTable> {
                             Icons.date_range,
                           ),
                           Text(
-                            "  Today Courses",
+                            "  Time Table",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -78,33 +83,122 @@ class _TimeTableState extends State<TimeTable> {
                               itemCount: coursesList.length,
                               itemBuilder: (context, index) {
                                 return Container(
-                                  height: 40,
                                   width: double.infinity,
                                   color: Colors.orange,
                                   padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: widget.toDay? Column(
                                     children: [
-                                      Text(
-                                        '${coursesList[index].firstDay!}, ${coursesList[index].firstDay!}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                      if (coursesList[index].firstDay ==
+                                              coursesList[index].today &&
+                                          widget.toDay)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${coursesList[index].firstDayTimeClock!}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Container(
+                                              color: Colors.black87,
+                                              height: 20,
+                                              width: 1.9,
+                                            ),
+                                            Text(
+                                              coursesList[index].firstDay!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Container(
-                                        color: Colors.black87,
-                                        height: 20,
-                                        width: 1.9,
-                                      ),
-                                      Text(
-                                        coursesList[index].firstDay!,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                      SizedBox(height: 10),
+                                      if (coursesList[index].secondDay ==
+                                              coursesList[index].today &&
+                                          widget.toDay)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${coursesList[index].secondDayTimeClock!}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Container(
+                                              color: Colors.black87,
+                                              height: 20,
+                                              width: 1.9,
+                                            ),
+                                            Text(
+                                              coursesList[index].secondDay!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
+                                    ],
+                                  ) : Column(
+                                    children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${coursesList[index].firstDayTimeClock!}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Container(
+                                              color: Colors.black87,
+                                              height: 20,
+                                              width: 1.9,
+                                            ),
+                                            Text(
+                                              coursesList[index].firstDay!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${coursesList[index].secondDayTimeClock!}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Container(
+                                              color: Colors.black87,
+                                              height: 20,
+                                              width: 1.9,
+                                            ),
+                                            Text(
+                                              coursesList[index].secondDay!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                     ],
                                   ),
                                 );

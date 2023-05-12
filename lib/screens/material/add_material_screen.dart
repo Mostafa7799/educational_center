@@ -47,7 +47,7 @@ class _AddMaterialScreenState extends State<AddMaterialScreen> {
                       return DropdownMenuItem(
                           value: item.id.toString(),
                           child: Text(
-                            item.id.toString(),
+                            item.details.toString(),
                           ));
                     }).toList(),
                     decoration: InputDecoration(

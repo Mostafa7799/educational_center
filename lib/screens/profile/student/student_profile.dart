@@ -1,12 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:educational_center/controller/profile_controller/profile_cubit.dart';
-import 'package:educational_center/core/pref.dart';
+
 import 'package:educational_center/screens/auth/LoginScreen.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileStudent extends StatefulWidget {
   const ProfileStudent({Key? key}) : super(key: key);
@@ -16,11 +18,12 @@ class ProfileStudent extends StatefulWidget {
 }
 
 class _ProfileStudentState extends State<ProfileStudent> {
-
   File? pickedImageFile;
+  FormData? formData;
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return Scaffold(
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
@@ -33,6 +36,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
           if (state is StudentProfileLoadingState) {
             return const Center(child: CircularProgressIndicator());
           }
+
           /// Variables
           String? selectedLevel = studentData!.levelId.toString();
           TextEditingController school =
@@ -44,6 +48,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
           TextEditingController birthday =
               TextEditingController(text: studentData.birthdate);
           List<String> levels = ["1", "2", "3", "4"];
+
           return Padding(
             padding: const EdgeInsets.all(12.0),
             child: ListView(
@@ -69,16 +74,15 @@ class _ProfileStudentState extends State<ProfileStudent> {
                       left: 220,
                       child: InkWell(
                         onTap: () async {
-                          PickedFile? pickedFile = await ImagePicker().getImage(
-                            source:
-                                ImageSource.gallery, // or ImageSource.camera
+                          final ImagePicker _picker = ImagePicker();
+                          final XFile? pickedFile = await _picker.pickImage(
+                            source: ImageSource.gallery,
+                            maxWidth: 512,
+                            maxHeight: 512,
                           );
                           if (pickedFile != null) {
-                            File imageFile = File(pickedFile.path);
-                            print(imageFile);
-                            // Call the function to send the image to the API
                             setState(() {
-                              pickedImageFile = imageFile;
+                              pickedImageFile = File(pickedFile.path);
                             });
                           }
                         },
@@ -226,15 +230,15 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                             "phone": phone.text,
                                             "school": school.text,
                                             "birthdate": birthday.text,
-                                             "image": pickedImageFile,
-                                            "level_id":
-                                                selectedLevel.toString(),
+                                            "level_id": selectedLevel,
                                           });
                                         },
-                                        child: Text("Edit"),
                                         color: Colors.green,
                                         shape: StadiumBorder(),
                                         splashColor: Colors.blueAccent,
+                                        child: const Text(
+                                          "Edit",
+                                        ),
                                       ),
                                     ),
                                   ),

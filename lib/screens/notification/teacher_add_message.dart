@@ -27,7 +27,7 @@ class _TeacherAddMessageState extends State<TeacherAddMessage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Add Material",
+          "Add Message",
         ),
       ),
       body: BlocBuilder<HomeControllerCubit, HomeControllerState>(
@@ -43,7 +43,7 @@ class _TeacherAddMessageState extends State<TeacherAddMessage> {
                     return DropdownMenuItem(
                         value: item.id.toString(),
                         child: Text(
-                          item.id.toString(),
+                          item.details.toString(),
                         ));
                   }).toList(),
                   decoration: InputDecoration(

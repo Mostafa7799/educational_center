@@ -49,7 +49,7 @@ class _TeacherAddHomeworkState extends State<TeacherAddHomework> {
                       return DropdownMenuItem(
                           value: item.id.toString(),
                           child: Text(
-                            item.id.toString(),
+                            item.details.toString(),
                           ));
                     }).toList(),
                     decoration: InputDecoration(

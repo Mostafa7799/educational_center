@@ -1,3 +1,4 @@
+import 'package:educational_center/controller/courses_cotroller/course_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     HomeControllerCubit.get(context).getUserName();
+    await CourseCubit.get(context).getTopThreeList();
     super.didChangeDependencies();
   }
 
@@ -56,7 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SizedBox(
                 width: double.infinity,
                 height: 200,
-                child: TimeTable(endPoint:'user/todayCoursesList'),
+                child: TimeTable(
+                  endPoint: 'user/todayCoursesListUser',
+                  toDay: true,
+                ),
               ),
             ),
             const Divider(

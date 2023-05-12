@@ -18,10 +18,14 @@ class CourseModel {
   int? status;
   String? createdAt;
   String? updatedAt;
+  String? firstDayTimeClock;
+  String? today;
+  String? secondDayTimeClock;
   bool? loggedUserHaveThisCourse;
   SubjectModel? subject;
   List<TopThreeModel>? topThree;
-
+//"": " 08:00 AM - 10:00 AM",
+//             "": " 10:00 AM - 12:00 AM",
   CourseModel(
       {this.id,
         this.details,
@@ -41,26 +45,28 @@ class CourseModel {
         this.updatedAt,
         this.loggedUserHaveThisCourse,
         this.subject,
-        this.topThree
+        this.topThree,
+        this.firstDayTimeClock,
+        this.secondDayTimeClock,
+        this.today
       });
-  ///"firstday": "saturday",
-//         "firstdaytime": "first",
-//         "secondday": "tuesday",
-//         "seconddaytime": "second",
   CourseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     details = json['details'];
     subjectId = json['subject_id'];
     image = json['image'];
+    today = json['today'];
     noOfStudents = json['no_of_students'];
     noOfAvilables = json['no_of_avilables'];
-    firstDay = json['firstday'];
-    firstDayTime = json['firstdaytime'];
-    secondDay = json['secondday'];
-    secondDayTime = json['seconddaytime'];
-    time = json['time'];
-    startDate = json['start_date'];
-    endDate = json['end_date'];
+    firstDay = json['firstday'] ??'';
+    firstDayTimeClock = json['firstdaytimeclock'] ??'';
+    secondDayTimeClock = json['seconddaytimeclock'] ??'';
+    firstDayTime = json['firstdaytime']??'';
+    secondDay = json['secondday']??'';
+    secondDayTime = json['seconddaytime']??'';
+    time = json['time']??'';
+    startDate = json['start_date']??'';
+    endDate = json['end_date']??'';
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];

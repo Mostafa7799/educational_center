@@ -84,9 +84,9 @@ class _StudentHasThisCourseState extends State<StudentHasThisCourse> {
                               iconCourse: SizedBox(),
                               subjectName: coursesList[index].subject!.name!,
                               day: coursesList[index].firstDay!,
-                              time: coursesList[index].firstDayTime!,
-                              sDay: coursesList[index].secondDay!,
-                              sTime: coursesList[index].secondDayTime!,
+                              time: coursesList[index].firstDayTimeClock!,
+                              sDay: coursesList[index].secondDay ??'',
+                              sTime: coursesList[index].secondDayTimeClock ??'',
                             ),
                           );
                         }
