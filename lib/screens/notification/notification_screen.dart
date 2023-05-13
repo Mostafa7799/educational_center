@@ -39,7 +39,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return messagesList!.isEmpty
+          return messagesList.isEmpty
               ? const Center(
                   child: Text('No Data'),
                 )
@@ -61,9 +61,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Text(
-                                'Teacher message',
-                                style: TextStyle(
+                               Text(
+                                 messagesList[index].teacherName ??'none',
+                                style: const TextStyle(
                                   fontSize: 20,
                                 ),
                               ),

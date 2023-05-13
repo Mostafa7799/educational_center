@@ -4,6 +4,7 @@ class MessagesModel {
   String? text;
   String? createdAt;
   String? updatedAt;
+  String? teacherName;
 
   MessagesModel(
       {this.id,
@@ -11,6 +12,7 @@ class MessagesModel {
         this.text,
         this.createdAt,
         this.updatedAt,
+        this.teacherName
         });
 
   MessagesModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class MessagesModel {
     text = json['text'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    teacherName = json['teacher_name'];
   }
 
   Map<String, dynamic> toJson() {
