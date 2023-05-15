@@ -24,7 +24,6 @@ class _ProfileForTeacherState extends State<ProfileForTeacher> {
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           var teacherData = ProfileCubit.get(context).teacherModel;
-
           /// Variables
           TextEditingController aboutTeacher =
               TextEditingController(text: teacherData?.createdAt);
@@ -44,250 +43,258 @@ class _ProfileForTeacherState extends State<ProfileForTeacher> {
           }
           return Padding(
             padding: const EdgeInsets.all(12.0),
-            child: ListView(
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: const [
-                    CircleAvatar(
-                      radius: 80,
-                      backgroundImage: AssetImage(
-                        'assets/images/me.png',
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      left: 220,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 20,
-                        child: Icon(
-                          Icons.camera_alt,
-                          size: 35,
-                          color: Color(0xFF404040),
+            child: RefreshIndicator(
+              onRefresh: ()async{
+                setState(() {
+                  ProfileCubit.get(context).getTeacherProfile();
+                  teacherData = ProfileCubit.get(context).teacherModel;
+                });
+              },
+              child: ListView(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: const [
+                      CircleAvatar(
+                        radius: 80,
+                        backgroundImage: AssetImage(
+                          'assets/images/me.png',
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Text(
-                    teacherData.username ?? 'none',
-                    style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400),
+                      Positioned(
+                        bottom: 10,
+                        left: 220,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20,
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 35,
+                            color: Color(0xFF404040),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Text(
+                      teacherData?.username ?? 'none',
+                      style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
 
-                /// Edit
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Edit profile",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                  /// Edit
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Edit profile",
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text(
-                                  "Edit information:",
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                content: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 320,
-                                    child: Column(
-                                      children: [
-                                        CustomTextField(
-                                          controller: email,
-                                          hint: 'Your Email@gmail.com',
-                                          icon1: Icons.email_outlined,
-                                        ),
-                                        CustomTextField(
-                                          controller: phone,
-                                          hint: 'Your Phone',
-                                          icon1: Icons.phone_android_sharp,
-                                        ),
-                                        CustomTextField(
-                                          controller: birthday,
-                                          hint: 'Your Birthday',
-                                          icon1: Icons.date_range,
-                                        ),
-                                        CustomTextField(
-                                          hint: 'About',
-                                          icon1: Icons.school_outlined,
-                                          controller: aboutTeacher,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                actions: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 60,
-                                    ),
-                                    child: SizedBox(
-                                      height: 35,
-                                      width: 100,
-                                      child: MaterialButton(
-                                        onPressed: () async {
-                                          await ProfileCubit.get(context)
-                                              .updateTeacherProfile(data: {
-                                            "username": teacherData.username,
-                                            "email": email.text,
-                                            "phone": phone.text,
-                                            "school": 'cairo',
-                                            "about": aboutTeacher.text,
-                                            "birthdate": birthday.text,
-                                          });
-                                        },
-                                        child: Text("Edit"),
-                                        color: Colors.green,
-                                        shape: StadiumBorder(),
-                                        splashColor: Colors.blueAccent,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 18),
-                                    child: SizedBox(
-                                      height: 35,
-                                      width: 100,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        color: Colors.red[700],
-                                        shape: StadiumBorder(),
-                                        child: Text("Cancel"),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            });
-                      },
-                      icon: const Icon(
-                        Icons.settings,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-
-                /// Logout
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Logout",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        await ProfileCubit.get(context)
-                            .logout(endPoint: 'teacher/logout')
-                            .then((value) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
                               builder: (context) {
-                                return const LoginPage();
-                              },
-                            ),
-                          );
-                        });
-                      },
-                      color: Colors.red[800],
-                      splashColor: Colors.white,
-                      icon: const Icon(
-                        Icons.logout,
-                        color: Colors.black,
+                                return AlertDialog(
+                                  title: const Text(
+                                    "Edit information:",
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  content: SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 320,
+                                      child: Column(
+                                        children: [
+                                          CustomTextField(
+                                            controller: email,
+                                            hint: 'Your Email@gmail.com',
+                                            icon1: Icons.email_outlined,
+                                          ),
+                                          CustomTextField(
+                                            controller: phone,
+                                            hint: 'Your Phone',
+                                            icon1: Icons.phone_android_sharp,
+                                          ),
+                                          CustomTextField(
+                                            controller: birthday,
+                                            hint: 'Your Birthday',
+                                            icon1: Icons.date_range,
+                                          ),
+                                          CustomTextField(
+                                            hint: 'About',
+                                            icon1: Icons.school_outlined,
+                                            controller: aboutTeacher,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  actions: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 60,
+                                      ),
+                                      child: SizedBox(
+                                        height: 35,
+                                        width: 100,
+                                        child: MaterialButton(
+                                          onPressed: () async {
+                                            await ProfileCubit.get(context)
+                                                .updateTeacherProfile(data: {
+                                              "username": teacherData?.username ??'none',
+                                              "email": email.text,
+                                              "phone": phone.text,
+                                              "school": 'cairo',
+                                              "about": aboutTeacher.text,
+                                              "birthdate": birthday.text,
+                                            });
+                                          },
+                                          child: Text("Edit"),
+                                          color: Colors.green,
+                                          shape: StadiumBorder(),
+                                          splashColor: Colors.blueAccent,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 18),
+                                      child: SizedBox(
+                                        height: 35,
+                                        width: 100,
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          color: Colors.red[700],
+                                          shape: StadiumBorder(),
+                                          child: Text("Cancel"),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
-                /// Profile data
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "About:",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                  /// Logout
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    CardInfo(
-                      icon: Icons.school_outlined,
-                      text: teacherData.school ?? 'none',
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10, right: 310),
-                      child: Text(
-                        "Email:",
+                      IconButton(
+                        onPressed: () async {
+                          await ProfileCubit.get(context)
+                              .logout(endPoint: 'teacher/logout')
+                              .then((value) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const LoginPage();
+                                },
+                              ),
+                            );
+                          });
+                        },
+                        color: Colors.red[800],
+                        splashColor: Colors.white,
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  /// Profile data
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "About:",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                    CardInfo(
-                      icon: Icons.email_outlined,
-                      text: teacherData.email ?? 'none',
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10, right: 230),
-                      child: Text(
-                        "PhoneNamber:",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
+                      CardInfo(
+                        icon: Icons.school_outlined,
+                        text: teacherData?.school ?? 'none',
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10, right: 310),
+                        child: Text(
+                          "Email:",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    CardInfo(
-                      icon: Icons.phone_android_sharp,
-                      text: teacherData.phone ?? 'none',
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10, right: 275),
-                      child: Text(
-                        "Birthday:",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w400),
+                      CardInfo(
+                        icon: Icons.email_outlined,
+                        text: teacherData?.email ?? 'none',
                       ),
-                    ),
-                    CardInfo(
-                      icon: Icons.date_range,
-                      text: teacherData.birthdate ?? 'none',
-                    ),
-                  ],
-                )
-              ],
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10, right: 230),
+                        child: Text(
+                          "PhoneNamber:",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      CardInfo(
+                        icon: Icons.phone_android_sharp,
+                        text: teacherData?.phone ?? 'none',
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10, right: 275),
+                        child: Text(
+                          "Birthday:",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      CardInfo(
+                        icon: Icons.date_range,
+                        text: teacherData?.birthdate ?? 'none',
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         },

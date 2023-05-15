@@ -41,38 +41,36 @@ class _AddMaterialScreenState extends State<AddMaterialScreen> {
             padding: const EdgeInsets.all(12.0),
             child: ListView(
               children: [
-                Flexible(
-                  child: DropdownButtonFormField<String>(
-                    items: subjectList?.map((item) {
-                      return DropdownMenuItem(
-                          value: item.id.toString(),
-                          child: Text(
-                            item.details.toString(),
-                          ));
-                    }).toList(),
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.edit,
-                        color: Colors.black,
-                      ),
-                      hintText: "Enter Subject",
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.yellowAccent),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 1.5, color: Colors.yellowAccent),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                DropdownButtonFormField<String>(
+                  items: subjectList?.map((item) {
+                    return DropdownMenuItem(
+                        value: item.id.toString(),
+                        child: Text(
+                          item.details.toString(),
+                        ));
+                  }).toList(),
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(
+                      Icons.edit,
+                      color: Colors.black,
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSubject = value;
-                      });
-                    },
-                    value: selectedSubject,
+                    hintText: "Enter Subject",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.yellowAccent),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          width: 1.5, color: Colors.yellowAccent),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSubject = value;
+                    });
+                  },
+                  value: selectedSubject,
                 ),
                 const SizedBox(
                   height: 10,
@@ -137,8 +135,6 @@ class _AddMaterialScreenState extends State<AddMaterialScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-
-                const Spacer(),
                 ElevatedButton(
                   onPressed: () async {
                     await MaterialCubit.get(context).teacherAddMaterial(data: {

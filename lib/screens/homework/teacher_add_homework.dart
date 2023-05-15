@@ -44,36 +44,39 @@ class _TeacherAddHomeworkState extends State<TeacherAddHomework> {
               key: formKey,
               child: ListView(
                 children: [
-                  DropdownButtonFormField<String>(
-                    items: coursesLise.map((item) {
-                      return DropdownMenuItem(
-                          value: item.id.toString(),
-                          child: Text(
-                            item.details.toString(),
-                          ));
-                    }).toList(),
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.edit,
-                        color: Colors.black,
+                  SizedBox(
+                    height: 80,
+                    child: DropdownButtonFormField<String>(
+                      items: coursesLise.map((item) {
+                        return DropdownMenuItem(
+                            value: item.id.toString(),
+                            child: Text(
+                              item.details.toString(),
+                            ));
+                      }).toList(),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.edit,
+                          color: Colors.black,
+                        ),
+                        hintText: "Select Course",
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.amber),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(width: 1.5, color: Colors.amber),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
-                      hintText: "Select Course",
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.amber),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(width: 1.5, color: Colors.amber),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          cubit.selectedCourse = value;
+                        });
+                      },
+                      value: cubit.selectedCourse,
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        cubit.selectedCourse = value;
-                      });
-                    },
-                    value: cubit.selectedCourse,
                   ),
                   const SizedBox(
                     height: 10,
@@ -164,7 +167,6 @@ class _TeacherAddHomeworkState extends State<TeacherAddHomework> {
                     labeltext: '',
                     icon: Icons.date_range,
                   ),
-                  const Spacer(),
                   ElevatedButton(
                     onPressed: () async {
                       await HomeControllerCubit.get(context).teacherAddHomework(

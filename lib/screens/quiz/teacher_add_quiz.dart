@@ -67,38 +67,39 @@ class _TeacherAddQuizState extends State<TeacherAddQuiz> {
             padding: const EdgeInsets.all(12.0),
             child: ListView(
               children: [
-                DropdownButtonFormField<String>(
-                  items: coursesLise.map((item) {
-                    return DropdownMenuItem(
-                        value: item.id.toString(),
-                        child: Flexible(
+                SizedBox(
+                  height: 80,
+                  child: DropdownButtonFormField<String>(
+                    items: coursesLise.map((item) {
+                      return DropdownMenuItem(
+                          value: item.id.toString(),
                           child: Text(
                             item.details.toString(),
-                          ),
-                        ));
-                  }).toList(),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(
-                      Icons.edit,
-                      color: Colors.black,
+                          ));
+                    }).toList(),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.edit,
+                        color: Colors.black,
+                      ),
+                      hintText: "Enter Course",
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.yellowAccent),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(width: 1.5, color: Colors.yellowAccent),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
-                    hintText: "Enter Course",
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.yellowAccent),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                      const BorderSide(width: 1.5, color: Colors.yellowAccent),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        cubit.selectedCourse = value;
+                      });
+                    },
+                    value: cubit.selectedCourse,
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      cubit.selectedCourse = value;
-                    });
-                  },
-                  value: cubit.selectedCourse,
                 ),
                 const Text(
                   " Quiz Name",
@@ -286,7 +287,6 @@ class _TeacherAddQuizState extends State<TeacherAddQuiz> {
                     ),
                   ],
                 ),
-                const Spacer(),
                 ElevatedButton(
                   onPressed: () async {
                     await QuizCubit.get(context).teacherAddQuiz(

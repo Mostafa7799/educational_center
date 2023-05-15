@@ -14,7 +14,7 @@ class ApiConstant{
   static String quizUserEndPoint = 'user/quizzesForUser';
   static String quizTeacherEndPoint = 'teacher/quizzesForTeacher';
   static String teacherProfileEndPoint = 'teacher/profile';
-  static String updateTeacherProfileEndPoint = 'update/profile';
+  static String updateTeacherProfileEndPoint = 'teacher/update/profile';
   static String addAnswerToQuizEndPoint = 'teacher/addQuestionToQuiz';
   static String getMessageEndPoint = 'user/messages';
 }
